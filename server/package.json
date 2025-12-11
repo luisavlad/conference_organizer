@@ -1,6 +1,21 @@
 {
+  "name": "conference-organizer-server",
+  "version": "1.0.0",
+  "description": "Conference Organizer Server",
+  "main": "core/server.js",
+  "scripts": {
+    "start": "node core/server.js",
+    "dev": "nodemon core/server.js"
+  },
   "dependencies": {
+    "bcrypt": "^5.1.1",
     "express": "^5.2.1",
-    "sequelize": "^6.37.7"
+    "jsonwebtoken": "^9.0.3",
+    "multer": "^2.0.2",
+    "sequelize": "^6.37.7",
+    "sqlite3": "^5.1.7"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.2"
   }
 }
