@@ -1,5 +1,5 @@
 const { DataTypes } = require("sequelize");
-const sequelize = require("../sequelize");
+const sequelize = require("../config/sequelize");
 
 const Article = sequelize.define(
   "Article",
@@ -44,6 +44,10 @@ const Article = sequelize.define(
       type: DataTypes.INTEGER,
       defaultValue: 1,
       allowNull: false,
+    },
+    reviewerId: {
+      type: DataTypes.UUID,
+      allowNull: true,
     },
   },
   {
