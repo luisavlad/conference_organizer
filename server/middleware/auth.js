@@ -1,10 +1,18 @@
-const authMiddleware = (req, res, next) => {
-    req.user = {
-        id: '123e4567-e89b-12d3-a456-426614174000',
-        email: 'test@example.com',
-        role: 'author'
-    };
-    next();
-};
+const jwt = require("jsonwebtoken");
 
-module.exports = authMiddleware;
+module.exports = (req, res, next) => {
+  try {
+    const header = req.headers.authorization;
+    if (!header || !header.startsWith("Bearer ")) {
+      return res.status(401).json({ error: "Missing token" });
+    }
+
+    const token = header.split(" ")[1];
+    const payload = jwt.verify(token, process.env.JWT_SECRET);
+
+    req.user = payload;
+    next();
+  } catch (err) {
+    return res.status(401).json({ error: "Invalid token" });
+  }
+};

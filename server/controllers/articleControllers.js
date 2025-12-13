@@ -1,7 +1,8 @@
-const Article = require('../models/article');
+const Article = require('../models/articleModels');
 const path = require('path');
 const fs = require('fs').promises;
 
+// GET /api/articles/:id
 exports.getArticleById = async (req, res) => {
     const { id } = req.params;
     
@@ -18,6 +19,7 @@ exports.getArticleById = async (req, res) => {
     }
 };
 
+// PATCH /api/articles/:id
 exports.updateArticle = async (req, res) => {
     const { id } = req.params;
     const { title, summary } = req.body;
@@ -44,6 +46,7 @@ exports.updateArticle = async (req, res) => {
     }
 };
 
+// DELETE /api/articles/:id
 exports.deleteArticle = async (req, res) => {
     const { id } = req.params;
     const userId = req.user.id;
@@ -72,6 +75,7 @@ exports.deleteArticle = async (req, res) => {
     }
 };
 
+// POST /api/conferences/:conferenceId/articles
 exports.uploadArticle = async (req, res) => {
     const { conferenceId } = req.params;
     const { title, summary } = req.body;
@@ -100,6 +104,7 @@ exports.uploadArticle = async (req, res) => {
     }
 };
 
+// GET /api/conferences/:conferenceId/articles/as-author
 exports.getArticlesAsAuthor = async (req, res) => {
     const { conferenceId } = req.params;
     const authorId = req.user.id;
@@ -118,6 +123,7 @@ exports.getArticlesAsAuthor = async (req, res) => {
     }
 };
 
+// GET /api/articles/:articleId/versions
 exports.getArticleVersions = async (req, res) => {
     const { articleId } = req.params;
     
@@ -139,6 +145,7 @@ exports.getArticleVersions = async (req, res) => {
     }
 };
 
+// POST /api/articles/:articleId/versions
 exports.uploadNewVersion = async (req, res) => {
     const { articleId } = req.params;
     const userId = req.user.id;
@@ -172,6 +179,7 @@ exports.uploadNewVersion = async (req, res) => {
     }
 };
 
+// GET /api/conferences/:conferenceId/articles/review
 exports.getArticlesForReview = async (req, res) => {
     const { conferenceId } = req.params;
     const reviewerId = req.user.id;
@@ -190,6 +198,7 @@ exports.getArticlesForReview = async (req, res) => {
     }
 };
 
+// GET /api/conferences/:conferenceId/articles/monitor
 exports.monitorArticles = async (req, res) => {
     const { conferenceId } = req.params;
     
@@ -204,6 +213,7 @@ exports.monitorArticles = async (req, res) => {
     }
 };
 
+// POST /api/articles/:articleId/review
 exports.submitReview = async (req, res) => {
     const { articleId } = req.params;
     const reviewerId = req.user.id;

@@ -1,6 +1,7 @@
-const Conference = require('../models/conference');
-const Article = require('../models/article');
+const Conference = require('../models/conferenceModels');
+const Article = require('../models/articleModels');
 
+// POST /api/conferences
 exports.createConference = async (req, res) => {
     const { title, description, location, startDate, endDate, submissionStart, submissionEnd } = req.body;
     const createdBy = req.user.id; 
@@ -22,6 +23,7 @@ exports.createConference = async (req, res) => {
     }
 };
 
+// GET /api/conferences
 exports.getAllConferences = async (req, res) => {
     try {
         const conferences = await Conference.findAll(); 
@@ -31,6 +33,7 @@ exports.getAllConferences = async (req, res) => {
     }
 };
 
+// GET /api/conferences/:id
 exports.getConferenceById = async (req, res) => {
     const { id } = req.params;
     
@@ -47,6 +50,7 @@ exports.getConferenceById = async (req, res) => {
     }
 };
 
+// GET /api/conferences/as-author
 exports.getConferencesAsAuthor = async (req, res) => {
     const authorId = req.user.id;
     
@@ -71,6 +75,7 @@ exports.getConferencesAsAuthor = async (req, res) => {
     }
 };
 
+// GET /api/conferences/as-reviewer
 exports.getConferencesAsReviewer = async (req, res) => {
     const reviewerId = req.user.id;
     
@@ -94,6 +99,7 @@ exports.getConferencesAsReviewer = async (req, res) => {
     }
 };
 
+// DELETE /api/conferences/:id
 exports.deleteConference = async (req, res) => {
     const { id } = req.params;
     const userId = req.user.id;
@@ -116,6 +122,7 @@ exports.deleteConference = async (req, res) => {
     }
 };
 
+// POST /api/conferences/:id/reviewers
 exports.allocateReviewers = async (req, res) => {
     const conferenceId = req.params.id;
     const { articleId, reviewerId } = req.body; 
