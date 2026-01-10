@@ -71,14 +71,14 @@ Most endpoints require authentication. The JWT token can be included in the Auth
 
 Project Structure
 server/
-├── config/          Database configuration
-├── controllers/     Request handlers
-├── core/            App and server setup
-├── middleware/      Authentication middleware
-├── models/          Sequelize models
-├── routes/          API routes
-├── sqlite/          SQLite database files
-└── uploads/         Uploaded article files
+-  config/          Database configuration
+- controllers/     Request handlers
+- core/            App and server setup
+- middleware/      Authentication middleware
+- models/          Sequelize models
+- routes/          API routes
+- sqlite/          SQLite database files
+- uploads/         Uploaded article files
 
 Database
 The application uses SQLite. The database will be created automatically on first run.
