@@ -23,6 +23,7 @@ Installation
 2. Install dependencies: npm install
 
 Running the Application
+
 1. Development Mode (with auto-restart): npm run dev
 
 2. Production Mode: npm start
@@ -67,6 +68,7 @@ Comments
 - DELETE /api/comments/:id - Delete comment (Organizers only)
 
 Authentication
+
 Most endpoints require authentication. The JWT token can be included in the Authorization header: Bearer <jwt-token>
 
 Project Structure
@@ -82,6 +84,7 @@ server/
 - uploads/         Uploaded article files
 
 Database
+
 The application uses SQLite. The database will be created automatically on first run.
 
 User Roles
