@@ -71,6 +71,7 @@ Authentication
 
 Most endpoints require authentication. The JWT token can be included in the Authorization header: Bearer <jwt-token>
 
+
 Project Structure
 
 server/
