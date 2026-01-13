@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import ConferenceCard from "../components/conferences/ConferenceCard";
 import conferenceRequests from "../api/conferenceRequests";
 import styles from "./Conferences.module.css";
+import { Link } from "react-router-dom";
 
 export default function Conferences() {
   const [conferences, setConferences] = useState([]);
@@ -45,7 +46,10 @@ export default function Conferences() {
 
   return (
     <div className={styles.container}>
-      <h1>Conferences</h1>
+      <div className={styles.header}>
+        <h1>Conferences</h1>
+        <Link to="/conferences/create">Create new</Link>
+      </div>
       <div className={styles.grid}>
         {conferences.map((conference) => (
           <div key={conference.id}>

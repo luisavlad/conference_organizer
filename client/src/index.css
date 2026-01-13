@@ -60,6 +60,7 @@ button {
   font-weight: 500;
   font-size: medium;
   text-align: center;
+  text-decoration: none;
 }
 
 a:hover,
