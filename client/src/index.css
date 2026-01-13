@@ -67,3 +67,7 @@ button:hover {
   background-color: var(--primary);
   color: var(--background);
 }
+
+.reset {
+  all: unset;
+}

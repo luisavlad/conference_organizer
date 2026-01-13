@@ -1,9 +1,41 @@
 .header {
   background-color: var(--background--hover);
-  padding: 4rem;
+  padding: 2rem 4rem;
+}
+
+.navContent {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.userDropdown {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.userSelect {
+  padding: 0.5rem 1rem;
+  border: 1px solid var(--background--lines);
+  border-radius: 8px;
+  cursor: pointer;
 }
 
 .container {
   flex-grow: 1;
   padding: 4rem;
+}
+
+.link {
+  font-size: var(--fontsize--xlarge);
+  border: none;
+  background-color: var(--background--hover);
+  text-decoration: none;
+}
+
+.link:hover {
+  background-color: var(--background--hover);
+  color: var(--primary);
+  font-weight: 700;
 }
