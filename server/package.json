@@ -5,7 +5,8 @@
   "main": "core/server.js",
   "scripts": {
     "start": "node core/server.js",
-    "dev": "nodemon core/server.js"
+    "dev": "nodemon core/server.js",
+    "seed": "node seed.js"
   },
   "dependencies": {
     "bcrypt": "^5.1.1",
