@@ -120,6 +120,10 @@ async function seed() {
         location: "San Francisco, CA",
         startDate: new Date("2026-06-01"),
         endDate: new Date("2026-06-03"),
+        reviewer1: U_IDS.REV1,
+        reviewer2: U_IDS.REV2,
+        reviewer3: U_IDS.REV3,
+        articles: [A_IDS.ART1],
       },
       {
         id: C_IDS.CONF2,
@@ -128,6 +132,10 @@ async function seed() {
         location: "London, UK",
         startDate: new Date("2026-07-15"),
         endDate: new Date("2026-07-17"),
+        reviewer1: U_IDS.REV2,
+        reviewer2: U_IDS.REV3,
+        reviewer3: U_IDS.REV4,
+        articles: [A_IDS.ART2],
       },
       {
         id: C_IDS.CONF3,
@@ -136,6 +144,10 @@ async function seed() {
         location: "Paris, France",
         startDate: new Date("2026-08-10"),
         endDate: new Date("2026-08-12"),
+        reviewer1: U_IDS.REV3,
+        reviewer2: U_IDS.REV4,
+        reviewer3: U_IDS.REV5,
+        articles: [A_IDS.ART3],
       },
       {
         id: C_IDS.CONF4,
@@ -144,6 +156,10 @@ async function seed() {
         location: "Berlin, Germany",
         startDate: new Date("2026-09-05"),
         endDate: new Date("2026-09-07"),
+        reviewer1: U_IDS.REV1,
+        reviewer2: U_IDS.REV4,
+        reviewer3: U_IDS.REV5,
+        articles: [A_IDS.ART4],
       },
       {
         id: C_IDS.CONF5,
@@ -152,54 +168,15 @@ async function seed() {
         location: "Toronto, Canada",
         startDate: new Date("2026-10-20"),
         endDate: new Date("2026-10-22"),
+        reviewer1: U_IDS.REV1,
+        reviewer2: U_IDS.REV2,
+        reviewer3: U_IDS.REV5,
+        articles: [A_IDS.ART5],
       },
     ]);
 
     // ---------------------------------------------------------
-    // 3. Assign Reviewers to Conferences
-    // ---------------------------------------------------------
-    console.log("🔗 Assigning Reviewers to Conferences...");
-
-    // Helper to find conf by ID
-    const getConf = (id) => conferences.find((c) => c.id === id);
-
-    // Tech Summit: Rev 1, 2, 3
-    await getConf(C_IDS.CONF1).addReviewers([
-      U_IDS.REV1,
-      U_IDS.REV2,
-      U_IDS.REV3,
-    ]);
-
-    // BioMed: Rev 2, 3, 4
-    await getConf(C_IDS.CONF2).addReviewers([
-      U_IDS.REV2,
-      U_IDS.REV3,
-      U_IDS.REV4,
-    ]);
-
-    // Art Expo: Rev 3, 4, 5
-    await getConf(C_IDS.CONF3).addReviewers([
-      U_IDS.REV3,
-      U_IDS.REV4,
-      U_IDS.REV5,
-    ]);
-
-    // CyberSec: Rev 1, 4, 5
-    await getConf(C_IDS.CONF4).addReviewers([
-      U_IDS.REV1,
-      U_IDS.REV4,
-      U_IDS.REV5,
-    ]);
-
-    // EduTech: Rev 1, 2, 5
-    await getConf(C_IDS.CONF5).addReviewers([
-      U_IDS.REV1,
-      U_IDS.REV2,
-      U_IDS.REV5,
-    ]);
-
-    // ---------------------------------------------------------
-    // 4. Create Articles
+    // 3. Create Articles
     // ---------------------------------------------------------
     console.log("📄 Seeding Articles...");
     await Article.bulkCreate([
@@ -264,7 +241,7 @@ async function seed() {
     ]);
 
     // ---------------------------------------------------------
-    // 5. Create Comments (Feedback)
+    // 4. Create Comments (Feedback)
     // ---------------------------------------------------------
     console.log("💬 Seeding Comments...");
     await Comment.bulkCreate([

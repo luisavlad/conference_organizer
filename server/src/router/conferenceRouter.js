@@ -3,6 +3,9 @@ import conferenceController from "../controllers/conferenceController.js";
 
 const conferenceRouter = express.Router();
 
-conferenceRouter.route("/").get(conferenceController.getAllConferences);
+conferenceRouter
+  .route("/")
+  .get(conferenceController.getAllConferences)
+  .post(conferenceController.createConference);
 
 export default conferenceRouter;

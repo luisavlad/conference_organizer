@@ -26,6 +26,19 @@ const Conference = database.define("Conference", {
     type: DataTypes.DATE,
     allowNull: false,
   },
+  reviewer1: {
+    type: DataTypes.UUID,
+  },
+  reviewer2: {
+    type: DataTypes.UUID,
+  },
+  reviewer3: {
+    type: DataTypes.UUID,
+  },
+  articles: {
+    type: DataTypes.JSON,
+    defaultValue: [],
+  },
 });
 
 export default Conference;
