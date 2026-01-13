@@ -1,23 +1,37 @@
-const express = require('express');
-const conferenceRoutes = require('../routes/conferenceRoutes');
-const articleRoutes = require('../routes/articleRoutes');
-const userRoutes = require('../routes/userRoutes');
-const reviewRoutes = require('../routes/reviewRoutes');
-const commentRoutes = require('../routes/commentRoutes');
+const express = require("express");
+const sequelize = require("../config/sequelize");
+const path = require("path");
 
 const app = express();
 
 app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use("/uploads", express.static(path.join(__dirname, "..", "uploads")));
 
-app.use('/api/users', userRoutes);
-app.use('/api/conferences', conferenceRoutes);
-app.use('/api', articleRoutes);
-app.use('/api', reviewRoutes);
-app.use('/api', commentRoutes);
+// routes
+const userRoutes = require("../routes/userRoutes");
+app.use("/api/users", userRoutes);
 
-app.get('/', (req, res) => {
-    res.json({ message: 'Conference Organizer API' });
-});
+const commentRoutes = require("../routes/commentRoutes");
+app.use("/api", commentRoutes);
+
+const reviewRoutes = require("../routes/reviewRoutes");
+app.use("/api", reviewRoutes);
+
+const demoRoutes = require("../routes/demo");
+app.use("/api/demo", demoRoutes);
+
+const conferenceRoutes = require("../routes/conferenceRoutes");
+app.use("/api", conferenceRoutes);
+
+const articleRoutes = require("../routes/articleRoutes");
+app.use("/api", articleRoutes);
+
+// Register models + relationships
+require("../models");
+
+sequelize
+  .sync()
+  .then(() => console.log("DB synced"))
+  .catch((err) => console.error("DB sync error", err));
 
 module.exports = app;

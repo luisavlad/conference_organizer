@@ -1,8 +1,8 @@
-const { DataTypes } = require("sequelize");
+const { DataTypes } = require('sequelize');
 const sequelize = require("../config/sequelize");
 
 const User = sequelize.define(
-  "User",
+  'User',
   {
     id: {
       type: DataTypes.UUID,
@@ -20,8 +20,12 @@ const User = sequelize.define(
       allowNull: false,
       unique: true,
     },
+    passwordHash: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
     role: {
-      type: DataTypes.ENUM("AUTHOR", "REVIEWER", "ORGANIZER"),
+      type: DataTypes.ENUM('AUTHOR', 'REVIEWER', 'ORGANIZER'),
       allowNull: false,
     },
     isAvailable: {

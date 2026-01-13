@@ -1,4 +1,4 @@
-const User = require("../models/userModels");
+const { User } = require("../models");
 
 // GET /api/users
 exports.listUsers = async (req, res) => {
@@ -82,6 +82,83 @@ exports.updateUser = async (req, res) => {
 
     await user.save();
     return res.json(user);
+  } catch (err) {
+    return res.status(500).json({ error: err.message });
+  }
+};
+
+// GET /api/users/me
+exports.me = async (req, res) => {
+  try {
+    const user = await User.findByPk(req.user.userId, {
+      attributes: [
+        "id",
+        "name",
+        "email",
+        "role",
+        "isAvailable",
+        "createdAt",
+        "updatedAt",
+      ],
+    });
+
+    if (!user) return res.status(404).json({ error: "User not found" });
+    return res.json(user);
+  } catch (err) {
+    return res.status(500).json({ error: err.message });
+  }
+};
+
+// GET /api/users  (doar ADMIN=ORGANIZER)
+exports.listUsers = async (req, res) => {
+  try {
+    if (req.user.role !== "ORGANIZER") {
+      return res.status(403).json({ error: "Forbidden" });
+    }
+
+    const users = await User.findAll({
+      attributes: [
+        "id",
+        "name",
+        "email",
+        "role",
+        "isAvailable",
+        "createdAt",
+        "updatedAt",
+      ],
+    });
+
+    return res.json(users);
+  } catch (err) {
+    return res.status(500).json({ error: err.message });
+  }
+};
+
+// PATCH /api/users/me
+exports.updateMe = async (req, res) => {
+  try {
+    const { name, isAvailable } = req.body;
+
+    const user = await User.findByPk(req.user.userId);
+    if (!user) return res.status(404).json({ error: "User not found" });
+
+    // update fields
+    if (typeof name === "string") user.name = name;
+
+    // doar REVIEWER poate schimba isAvailable
+    if (typeof isAvailable === "boolean" && user.role === "REVIEWER") {
+      user.isAvailable = isAvailable;
+    }
+
+    await user.save();
+
+    return res.json({
+      id: user.id,
+      name: user.name,
+      email: user.email,
+      role: user.role,
+      isAvailable: user.isAvailable,
+    });
   } catch (err) {
     return res.status(500).json({ error: err.message });
   }

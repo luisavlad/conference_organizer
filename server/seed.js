@@ -1,9 +1,5 @@
 const sequelize = require("./config/sequelize");
-const User = require("./models/userModels");
-const Conference = require("./models/conferenceModels");
-const Article = require("./models/articleModels");
-const Review = require("./models/reviewModels");
-const Comment = require("./models/commentModels");
+const { User, Conference, Article, Review, Comment } = require("./models");
 
 async function seedDatabase() {
   try {

@@ -8,49 +8,49 @@ const Article = sequelize.define(
       type: DataTypes.UUID,
       defaultValue: DataTypes.UUIDV4,
       primaryKey: true,
-      allowNull: false,
-      unique: true,
     },
     title: {
       type: DataTypes.STRING,
       allowNull: false,
-      len: [1, 100],
     },
     summary: {
-      type: DataTypes.STRING,
-      allowNull: true,
-      len: [1, 500],
+      type: DataTypes.TEXT,
     },
-    pdfPath: {
+    pdfUrl: {
       type: DataTypes.STRING,
       allowNull: false,
     },
     status: {
-      type: DataTypes.ENUM('under_review', 'revision_required', 'accepted', 'rejected'),
-      defaultValue: 'under_review',
+      type: DataTypes.ENUM(
+        "IN_REVIEW",
+        "REVISION_REQUIRED",
+        "ACCEPTED",
+        "REJECTED"
+      ),
       allowNull: false,
+      defaultValue: "IN_REVIEW",
     },
     authorId: {
       type: DataTypes.UUID,
-      defaultValue: DataTypes.UUIDV4,
       allowNull: false,
     },
     conferenceId: {
       type: DataTypes.UUID,
-      defaultValue: DataTypes.UUIDV4,
       allowNull: false,
     },
     currentVersion: {
       type: DataTypes.INTEGER,
-      defaultValue: 1,
       allowNull: false,
+      defaultValue: 1,
     },
-    reviewerId: {
-      type: DataTypes.UUID,
-      allowNull: true,
+    versions: {
+      type: DataTypes.JSON,
+      allowNull: false,
+      defaultValue: [],
     },
   },
   {
+    tableName: "articles",
     timestamps: true,
   }
 );

@@ -1,15 +1,18 @@
-const Review = require('../models/reviewModels');
+const { Review } = require("../models");
 
-// POST /api/articles/:articleId/reviews
 exports.createReview = async (req, res) => {
   try {
     const { articleId } = req.params;
-    const reviewerId = req.user.userId;
+    const { reviewerId, decision } = req.body;
+
+    if (!reviewerId) {
+      return res.status(400).json({ error: "reviewerId is required" });
+    }
 
     const review = await Review.create({
       articleId,
       reviewerId,
-      decision: 'pending'
+      decision: decision || "pending",
     });
 
     res.status(201).json(review);

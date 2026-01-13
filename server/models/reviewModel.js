@@ -1,6 +1,7 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require("../config/sequelize");
 
+
 const Review = sequelize.define(
   'Review',
   {
@@ -20,7 +21,7 @@ const Review = sequelize.define(
       allowNull: false,
     },
     decision: {
-      type: DataTypes.ENUM('accepted', 'rejected', 'revision_required', 'pending'),
+      type: DataTypes.ENUM('accept', 'reject', 'revision_required'),
       allowNull: false,
     },
   },
