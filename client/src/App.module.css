@@ -1,6 +1,7 @@
 .header {
   background-color: var(--background--hover);
   padding: 2rem 4rem;
+  font-size: var(--fontsize--large);
 }
 
 .navContent {
@@ -20,6 +21,7 @@
   border: 1px solid var(--background--lines);
   border-radius: 8px;
   cursor: pointer;
+  font-size: var(--fontsize--large);
 }
 
 .container {
@@ -28,7 +30,8 @@
 }
 
 .link {
-  font-size: var(--fontsize--xlarge);
+  font-size: var(--fontsize--huge);
+  font-weight: 500;
   border: none;
   background-color: var(--background--hover);
   text-decoration: none;
