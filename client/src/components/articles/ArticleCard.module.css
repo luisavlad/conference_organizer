@@ -1,0 +1,24 @@
+.container,
+.container:hover {
+  all: unset;
+  box-sizing: border-box;
+
+  width: 100%;
+  padding: 2rem;
+  border: 1px solid var(--background--lines);
+  border-radius: 8px;
+
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.container:hover {
+  cursor: pointer;
+  background-color: var(--background--hover);
+  border: 1px solid var(--primary);
+}
+
+.title {
+  margin-bottom: 1rem;
+}

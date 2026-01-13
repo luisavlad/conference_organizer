@@ -1,0 +1,9 @@
+.header {
+  background-color: var(--background--hover);
+  padding: 4rem;
+}
+
+.container {
+  flex-grow: 1;
+  padding: 4rem;
+}

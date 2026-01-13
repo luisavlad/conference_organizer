@@ -1,0 +1,69 @@
+*,
+*::after,
+*::before {
+  margin: 0;
+  padding: 0;
+  box-sizing: inherit;
+}
+
+:root {
+  /* colors */
+  --background: #fff;
+  --background--hover: #f6f6f6;
+  --background--lines: #ced4da;
+
+  --primary: #000;
+  --secondary: #343a40;
+
+  /* typography */
+  --fontsize--xsmall: 1.2rem;
+  --fontsize--small: 1.4rem;
+  --fontsize--medium: 1.6rem;
+  --fontsize--large: 1.8rem;
+  --fontsize--xlarge: 2.2rem;
+  --fontsize--huge: 3.2rem;
+}
+
+:focus-visible {
+  outline: 1px solid var(--primary);
+}
+
+html {
+  font-size: 62.5%;
+}
+
+body {
+  box-sizing: border-box;
+  background-color: var(--background);
+  color: var(--primary);
+  margin: 0 auto;
+  font-size: var(--fontsize--medium);
+
+  height: 100dvh;
+  max-height: 100dvh;
+  width: 100%;
+  max-width: 160rem;
+
+  display: flex;
+  flex-direction: column;
+}
+
+a,
+button {
+  padding: 8px 12px;
+  background-color: var(--background);
+  color: var(--primary);
+  border: 1px solid var(--primary);
+  border-radius: 4px;
+  font-weight: 500;
+  font-size: medium;
+  text-align: center;
+}
+
+a:hover,
+button:hover {
+  transition: all 0.3s;
+  cursor: pointer;
+  background-color: var(--primary);
+  color: var(--background);
+}

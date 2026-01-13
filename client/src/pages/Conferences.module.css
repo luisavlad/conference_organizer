@@ -1,0 +1,14 @@
+.container {
+  h1 {
+    margin-bottom: 2rem;
+  }
+}
+
+.grid {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  align-content: center;
+  justify-items: center;
+  row-gap: 3rem;
+}

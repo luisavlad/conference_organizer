@@ -1,0 +1,14 @@
+.container {
+  width: 40rem;
+  padding: 2rem;
+  border: 1px solid var(--background--lines);
+  border-radius: 8px;
+
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.title {
+  margin-bottom: 1rem;
+}
