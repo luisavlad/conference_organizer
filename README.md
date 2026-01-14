@@ -1,93 +1,177 @@
-Conference Organizer
+# Conference Organizer
 
-Features
+A full-stack web application for managing academic conferences, article submissions, and peer reviews
 
-- Conference management
-- Article submission and versioning
-- Review system
-- Comment system with visibility controls
-- Automatic reviewer allocation
+## Features
 
-Tech Stack
+- Conference management and creation
+- Article submission with PDF upload
+- Article versioning system
+- PDF viewer for submitted articles
+- Review comment system with visibility controls (public/internal)
+- Automatic reviewer allocation (2 reviewers per article)
+- Conference reviewer assignment (3 reviewers per conference)
+- User role-based access control
+- Preview mode to test different user perspectives
 
+## Tech Stack
+
+### Frontend
+- React
+- React Router for navigation
+- Vite for build tooling
+- React-PDF for PDF viewing
+- Axios for API requests
+- CSS Modules for styling
+
+### Backend
 - Node.js
 - Express.js
 - Sequelize ORM
-- SQLite
+- PostgreSQL (production) / SQLite (development)
 - Multer for file uploads
 
-Installation
+## Installation
 
-1. Navigate to the server directory: cd server
+### Server Setup
 
-2. Install dependencies: npm install
+1. Navigate to the server directory:
+```bash
+cd server
+```
 
-Running the Application
+2. Install dependencies:
+```bash
+npm install
+```
 
-1. Development Mode (with auto-restart): npm run dev
+3. Set up environment variables (create `.env` file):
+```
+DATABASE_URL=your_postgresql_url (optional, uses SQLite if not provided)
+FRONTEND_URL=http://localhost:5173
+PORT=8080
+```
 
-2. Production Mode: npm start
+### Client Setup
 
-The server will start on http://localhost:8080
+1. Navigate to the client directory:
+```bash
+cd client
+```
 
-Endpoints
-Users
+2. Install dependencies:
+```bash
+npm install
+```
 
-- POST /api/users/register - Register new user
-- POST /api/users/login - User login
-- GET /api/users/me - Get current user profile
-- PATCH /api/users/me - Update current user
-- GET /api/users - List all users (Organizers only)
+3. Set up environment variables (create `.env` file):
+```
+VITE_API_URL=http://localhost:8080/api
+```
 
-Conferences
+## Running the Application
 
-- POST /api/conferences - Create conference
-- GET /api/conferences - Get all conferences
-- GET /api/conferences/:id - Get conference by ID
-- GET /api/conferences/as-author - Get conferences where user is author
-- GET /api/conferences/as-reviewer - Get conferences where user is reviewer
-- DELETE /api/conferences/:id - Delete conference
-- POST /api/conferences/:id/reviewers - Allocate reviewers
+### Development Mode
 
-Articles
+1. Start the server (from `server` directory):
+```bash
+npm run dev
+```
+Server will start on http://localhost:8080
 
-- POST /api/conferences/:conferenceId/articles - Upload article
-- GET /api/articles/:id - Get article by ID
-- PATCH /api/articles/:id - Update article
-- DELETE /api/articles/:id - Delete article
-- GET /api/conferences/:conferenceId/articles/as-author - Get articles as author
-- GET /api/conferences/:conferenceId/articles/review - Get articles for review
-- GET /api/conferences/:conferenceId/articles/monitor - Monitor articles
-- GET /api/articles/:articleId/versions - Get article versions
-- POST /api/articles/:articleId/versions - Upload new version
-- POST /api/articles/:articleId/review - Submit review
+2. Start the client (from `client` directory):
+```bash
+npm run dev
+```
+Client will start on http://localhost:5173
 
-Reviews
+### Production Mode
 
-- POST /api/articles/:articleId/reviews - Create review
+Server:
+```bash
+npm start
+```
 
-Comments
+Client:
+```bash
+npm run build
+npm run preview
+```
 
-- POST /api/reviews/:reviewId/comments - Create comment
-- GET /api/reviews/:reviewId/comments - Get comments by review
-- DELETE /api/comments/:id - Delete comment (Organizers only)
+### Database Seeding
 
-Project Structure
+To populate the database with sample data (from `server` directory):
+```bash
+npm run seed
+```
 
-server/
+## API Endpoints
 
-- config/ Database configuration
-- controllers/ Request handlers
-- core/ App and server setup
-- models/ Sequelize models
-- routes/ API routes
+### Users
+- `GET /api/users/reviewers` - Get all reviewers
 
-Database
+### Conferences
+- `GET /api/conferences` - Get all conferences
+- `POST /api/conferences` - Create new conference
 
-The application uses SQLite. The database will be created automatically on first run.
+### Articles
+- `GET /api/articles/conference/:conferenceId` - Get articles by conference
+- `GET /api/articles/:id` - Get article by ID
+- `POST /api/articles` - Create article (with PDF upload)
+- `PATCH /api/articles/:id` - Update article (upload new version)
+- `PATCH /api/articles/:id/status` - Update article status
+- `GET /api/articles/:id/pdf` - Get article PDF file
 
-User Roles
+### Comments
+- `GET /api/comments/article/:articleId` - Get comments by article
+- `POST /api/comments` - Create comment
 
-- Author: Can submit and manage their articles
-- Reviewer: Can review assigned articles
-- Organizer: Has full access to manage conferences, allocate reviewers, and moderate other users' activity
+## Project Structure
+
+```
+conference_organizer/
+├── client/                    # Frontend React application
+│   ├── public/
+│   │   └── mock/             # Sample PDF files
+│   ├── src/
+│   │   ├── api/              # API request modules
+│   │   ├── components/       # Reusable React components
+│   │   ├── contexts/         # React Context (UserContext)
+│   │   ├── pages/            # Page components
+│   │   └── App.jsx           # Main app component
+│   ├── package.json
+│   └── vite.config.js
+│
+└── server/                    # Backend Express application
+    ├── src/
+    │   ├── config/           # Multer configuration
+    │   ├── controllers/      # Request handlers
+    │   ├── core/             # App, server, and database setup
+    │   ├── models/           # Sequelize models
+    │   ├── router/           # API routes
+    │   └── seed.js           # Database seeding script
+    └── package.json
+```
+
+## Database
+
+The application supports both SQLite (development) and PostgreSQL (production). The database will be created automatically on first run. To switch between databases, set or unset the `DATABASE_URL` environment variable.
+
+### Models:
+- **User** - Stores user information and roles
+- **Conference** - Conference details and assigned reviewers
+- **Article** - Submitted articles with PDF data and versioning
+- **Comment** - Review comments with visibility settings
+
+## User Roles
+
+- **Author**: Can submit articles to conferences and view feedback
+- **Reviewer**: Can review assigned articles and leave internal/public comments
+- **Organizer**: Full access to manage conferences, allocate reviewers, and moderate content
+
+## Deployment
+
+The application is deployed on Render with:
+- Frontend: Static site deployment
+- Backend: Web service with PostgreSQL database
+- Automatic deployments on git push
