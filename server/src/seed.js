@@ -1,3 +1,4 @@
+import "dotenv/config";
 import database from "./core/database.js";
 import { User, Conference, Article, Comment } from "./models/index.js";
 

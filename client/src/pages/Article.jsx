@@ -20,8 +20,6 @@ export default function Article() {
   const [article, setArticle] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  const samplePdfUrl = "/mock/sample.pdf";
-
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -159,7 +157,7 @@ export default function Article() {
         )}
         <div className={styles.pdfViewer}>
           <Document
-            file={samplePdfUrl}
+            file={`${import.meta.env.VITE_API_URL?.replace('/api', '') || 'http://localhost:8080'}${article.pdfUrl}`}
             onLoadSuccess={onDocumentLoadSuccess}
             loading={<div>Loading PDF...</div>}
           >
