@@ -1,4 +1,4 @@
-import { Comment } from "../models/index.js";
+import { Comment, User } from "../models/index.js";
 
 const commentController = {
   getByArticleId: async (req, res) => {
@@ -9,6 +9,12 @@ const commentController = {
         where: {
           articleId: articleId,
         },
+        include: [
+          {
+            model: User,
+            attributes: ["id", "name", "email", "role"],
+          },
+        ],
         order: [["createdAt", "ASC"]],
       });
 

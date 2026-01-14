@@ -181,16 +181,18 @@
 .commentHeader {
   display: flex;
   justify-content: space-between;
-  font-size: 0.85rem;
-  color: #888;
+  font-size: 1rem;
+  color: #555;
 }
 
-.commentId {
-  font-family: monospace;
+.commentUser {
+  font-weight: 600;
+  color: #374151;
 }
 
 .commentDate {
   font-style: italic;
+  font-size: 0.95rem;
 }
 
 .commentText {
@@ -200,9 +202,9 @@
 
 .commentBadge {
   display: inline-block;
-  padding: 0.25rem 0.75rem;
+  padding: 0.4rem 0.85rem;
   border-radius: 4px;
-  font-size: 0.75rem;
+  font-size: 0.875rem;
   font-weight: 600;
   align-self: flex-start;
 }

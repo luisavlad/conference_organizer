@@ -210,8 +210,8 @@ export default function Article() {
             {visibleComments.map((comment) => (
               <div key={comment.id} className={styles.comment}>
                 <div className={styles.commentHeader}>
-                  <span className={styles.commentId}>
-                    {comment.id.substring(0, 8)}...
+                  <span className={styles.commentUser}>
+                    {comment.User?.name || 'Unknown User'}
                   </span>
                   <span className={styles.commentDate}>
                     {formatDate(comment.createdAt)}
