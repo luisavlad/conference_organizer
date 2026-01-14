@@ -10,7 +10,23 @@ import JoinConference from "./pages/JoinConference";
 import NotFound from "./pages/NotFound";
 
 export default function App() {
-  const { currentUser, switchUser, allUsers } = useUser();
+  const { currentUser, switchUser, allUsers, currentArticle } = useUser();
+
+  // Helper function to check if user can access the current article
+  const canUserAccessArticle = (user) => {
+    if (!currentArticle) return true; // No article context, allow all
+    if (user.role === "ORGANIZER") return true; // Organizers always have access
+    if (user.role === "AUTHOR") {
+      return user.id === currentArticle.authorId; // Only the article author
+    }
+    if (user.role === "REVIEWER") {
+      return (
+        user.id === currentArticle.reviewer1Id ||
+        user.id === currentArticle.reviewer2Id
+      ); // Only assigned reviewers
+    }
+    return false;
+  };
 
   return (
     <>
@@ -27,11 +43,23 @@ export default function App() {
               onChange={(e) => switchUser(e.target.value)}
               className={styles.userSelect}
             >
-              {allUsers.map((user) => (
-                <option key={user.id} value={user.id}>
-                  {user.name} - {user.role}
-                </option>
-              ))}
+              {allUsers.map((user) => {
+                const hasAccess = canUserAccessArticle(user);
+                return (
+                  <option 
+                    key={user.id} 
+                    value={user.id}
+                    disabled={!hasAccess}
+                    style={{ 
+                      color: hasAccess ? 'inherit' : '#999',
+                      fontStyle: hasAccess ? 'normal' : 'italic'
+                    }}
+                  >
+                    {hasAccess ? '' : '🔒 '}
+                    {user.name} - {user.role}
+                  </option>
+                );
+              })}
             </select>
           </div>
         </div>

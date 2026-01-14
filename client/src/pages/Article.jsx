@@ -12,7 +12,7 @@ pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/b
 
 export default function Article() {
   const { articleId } = useParams();
-  const { currentUser } = useContext(UserContext);
+  const { currentUser, setCurrentArticle } = useContext(UserContext);
   const [numPages, setNumPages] = useState(null);
   const [reviewText, setReviewText] = useState("");
   const [visibility, setVisibility] = useState("visible");
@@ -29,6 +29,7 @@ export default function Article() {
           commentRequests.getByArticleId(articleId),
         ]);
         setArticle(fetchedArticle);
+        setCurrentArticle(fetchedArticle); // Set article in context for header dropdown
         setComments(fetchedComments);
       } catch (error) {
         console.error("Failed to fetch data:", error);
@@ -38,7 +39,10 @@ export default function Article() {
     };
 
     fetchData();
-  }, [articleId]);
+
+    // Clear article from context when leaving the page
+    return () => setCurrentArticle(null);
+  }, [articleId, setCurrentArticle]);
 
   function onDocumentLoadSuccess({ numPages }) {
     setNumPages(numPages);

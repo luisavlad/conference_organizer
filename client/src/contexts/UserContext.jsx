@@ -97,6 +97,7 @@ const MOCK_USERS = [
 
 export function UserProvider({ children }) {
   const [currentUser, setCurrentUser] = useState(MOCK_USERS[0]);
+  const [currentArticle, setCurrentArticle] = useState(null);
 
   const switchUser = (userId) => {
     const user = MOCK_USERS.find((u) => u.id === userId);
@@ -111,6 +112,8 @@ export function UserProvider({ children }) {
         currentUser,
         switchUser,
         allUsers: MOCK_USERS,
+        currentArticle,
+        setCurrentArticle,
       }}
     >
       {children}
