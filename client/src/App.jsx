@@ -10,7 +10,7 @@ import JoinConference from "./pages/JoinConference";
 import NotFound from "./pages/NotFound";
 
 export default function App() {
-  const { currentUser, switchUser, allUsers, currentArticle } = useUser();
+  const { currentUser, switchUser, allUsers, currentArticle, currentConference } = useUser();
 
   // Helper function to check if user can access the current article
   const canUserAccessArticle = (user) => {
@@ -24,6 +24,23 @@ export default function App() {
         user.id === currentArticle.reviewer1Id ||
         user.id === currentArticle.reviewer2Id
       ); // Only assigned reviewers
+    }
+    return false;
+  };
+
+  // Helper function to check if user can access the current conference
+  const canUserAccessConference = (user) => {
+    if (!currentConference) return true; // No conference context, allow all
+    if (user.role === "ORGANIZER") return true; // Organizers always have access
+    if (user.role === "AUTHOR") {
+      // Authors who have submitted articles to this conference
+      return currentConference.articles?.some(article => article.authorId === user.id) ?? true;
+    }
+    if (user.role === "REVIEWER") {
+      // Reviewers assigned to any article in this conference
+      return currentConference.articles?.some(article => 
+        article.reviewer1Id === user.id || article.reviewer2Id === user.id
+      ) ?? true;
     }
     return false;
   };
@@ -44,7 +61,9 @@ export default function App() {
               className={styles.userSelect}
             >
               {allUsers.map((user) => {
-                const hasAccess = canUserAccessArticle(user);
+                const hasArticleAccess = canUserAccessArticle(user);
+                const hasConferenceAccess = canUserAccessConference(user);
+                const hasAccess = hasArticleAccess && hasConferenceAccess;
                 return (
                   <option 
                     key={user.id} 
