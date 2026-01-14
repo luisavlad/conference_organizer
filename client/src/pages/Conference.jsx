@@ -87,6 +87,7 @@ export default function Conference() {
                 key={article.id}
                 article={article}
                 conferenceId={conference.id}
+                currentUser={currentUser}
               />
             ))
           ) : (

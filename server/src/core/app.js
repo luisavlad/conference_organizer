@@ -3,6 +3,7 @@ import express from "express";
 import conferenceRouter from "../router/conferenceRouter.js";
 import userRouter from "../router/userRouter.js";
 import articleRouter from "../router/articleRouter.js";
+import commentRouter from "../router/commentRouter.js";
 
 const app = express();
 
@@ -20,6 +21,7 @@ app.use(express.urlencoded({ extended: true, limit: "10kb" }));
 app.use("/api/conferences", conferenceRouter);
 app.use("/api/users", userRouter);
 app.use("/api/articles", articleRouter);
+app.use("/api/comments", commentRouter);
 
 export default app;
 

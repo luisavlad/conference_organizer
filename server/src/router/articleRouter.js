@@ -10,6 +10,10 @@ articleRouter
 
 articleRouter.route("/").post(upload.single("pdf"), articleController.create);
 
+articleRouter.route("/:id").get(articleController.getById);
+
+articleRouter.route("/:id/status").patch(articleController.updateStatus);
+
 articleRouter.route("/:id/pdf").get(articleController.getPdf);
 
 export default articleRouter;

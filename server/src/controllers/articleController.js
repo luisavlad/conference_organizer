@@ -152,6 +152,80 @@ const articleController = {
       });
     }
   },
+
+  getById: async (req, res) => {
+    try {
+      const { id } = req.params;
+
+      const article = await Article.findByPk(id);
+
+      if (!article) {
+        return res.status(404).json({
+          status: "error",
+          message: "Article not found.",
+        });
+      }
+
+      res.status(200).json({
+        status: "success",
+        data: {
+          article,
+        },
+      });
+    } catch (err) {
+      console.error(err);
+      res.status(500).json({
+        status: "error",
+        message: "Failed to retrieve article.",
+      });
+    }
+  },
+
+  updateStatus: async (req, res) => {
+    try {
+      const { id } = req.params;
+      const { status } = req.body;
+
+      const validStatuses = [
+        "IN_REVIEW",
+        "REVISION_REQUIRED",
+        "ACCEPTED",
+        "REJECTED",
+      ];
+
+      if (!validStatuses.includes(status)) {
+        return res.status(400).json({
+          status: "error",
+          message: "Invalid status value.",
+        });
+      }
+
+      const article = await Article.findByPk(id);
+
+      if (!article) {
+        return res.status(404).json({
+          status: "error",
+          message: "Article not found.",
+        });
+      }
+
+      article.status = status;
+      await article.save();
+
+      res.status(200).json({
+        status: "success",
+        data: {
+          article,
+        },
+      });
+    } catch (err) {
+      console.error(err);
+      res.status(500).json({
+        status: "error",
+        message: "Failed to update article status.",
+      });
+    }
+  },
 };
 
 export default articleController;

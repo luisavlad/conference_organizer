@@ -8,6 +8,18 @@ const articleRequests = {
     return response.data.data.articles;
   },
 
+  async getById(articleId) {
+    const response = await apiClient.get(`/articles/${articleId}`);
+    return response.data.data.article;
+  },
+
+  async updateStatus(articleId, status) {
+    const response = await apiClient.patch(`/articles/${articleId}/status`, {
+      status,
+    });
+    return response.data.data.article;
+  },
+
   async create(formData) {
     const response = await apiClient.post("/articles", formData, {
       headers: {

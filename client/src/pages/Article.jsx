@@ -1,48 +1,46 @@
-import { useState } from "react";
+import { useState, useEffect, useContext } from "react";
+import { useParams } from "react-router-dom";
 import { Document, Page, pdfjs } from "react-pdf";
 import "react-pdf/dist/Page/AnnotationLayer.css";
 import "react-pdf/dist/Page/TextLayer.css";
+import commentRequests from "../api/commentRequests";
+import articleRequests from "../api/articleRequests";
+import { UserContext } from "../contexts/UserContext";
 import styles from "./Article.module.css";
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`;
 
-const mockComments = [
-  {
-    id: "123e4567-e89b-12d3-a456-426614174000",
-    reviewId: "987e4567-e89b-12d3-a456-426614174999",
-    text: "The methodology section needs more detail. Please clarify the sample selection process and explain why this approach was chosen over alternatives.",
-    isVisibleToAuthor: true,
-    createdAt: "2026-01-10T10:30:00Z",
-  },
-  {
-    id: "223e4567-e89b-12d3-a456-426614174001",
-    reviewId: "987e4567-e89b-12d3-a456-426614174999",
-    text: "The results in Table 3 are impressive. However, have you considered the potential confounding variables mentioned in Smith et al. (2025)?",
-    isVisibleToAuthor: true,
-    createdAt: "2026-01-11T14:20:00Z",
-  },
-  {
-    id: "323e4567-e89b-12d3-a456-426614174002",
-    reviewId: "987e4567-e89b-12d3-a456-426614174999",
-    text: "Internal note: This paper shows promise but needs major revisions before acceptance.",
-    isVisibleToAuthor: false,
-    createdAt: "2026-01-11T16:45:00Z",
-  },
-  {
-    id: "423e4567-e89b-12d3-a456-426614174003",
-    reviewId: "987e4567-e89b-12d3-a456-426614174999",
-    text: "Excellent discussion section! The implications for future research are well articulated. Minor suggestion: consider adding a figure to visualize the conceptual framework.",
-    isVisibleToAuthor: true,
-    createdAt: "2026-01-12T09:15:00Z",
-  },
-];
-
 export default function Article() {
+  const { id: articleId } = useParams();
+  const { currentUser } = useContext(UserContext);
   const [numPages, setNumPages] = useState(null);
   const [reviewText, setReviewText] = useState("");
   const [visibility, setVisibility] = useState("visible");
+  const [comments, setComments] = useState([]);
+  const [article, setArticle] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   const samplePdfUrl = "/mock/sample.pdf";
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        setLoading(true);
+        const [fetchedArticle, fetchedComments] = await Promise.all([
+          articleRequests.getById(articleId),
+          commentRequests.getByArticleId(articleId),
+        ]);
+        setArticle(fetchedArticle);
+        setComments(fetchedComments);
+      } catch (error) {
+        console.error("Failed to fetch data:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, [articleId]);
 
   function onDocumentLoadSuccess({ numPages }) {
     setNumPages(numPages);
@@ -58,20 +56,93 @@ export default function Article() {
     });
   }
 
-  function handleSendReview() {
-    console.log({
-      text: reviewText,
-      isVisibleToAuthor: visibility === "visible",
-      timestamp: new Date().toISOString(),
-    });
-    setReviewText("");
+  async function handleSendReview() {
+    if (!reviewText.trim()) return;
+
+    try {
+      const isPublic = canWriteInternalComments
+        ? visibility === "visible"
+        : true;
+
+      await commentRequests.create({
+        text: reviewText,
+        isPublic,
+        articleId,
+        userId: currentUser.id,
+      });
+
+      // Refetch comments to include the new one
+      const updatedComments = await commentRequests.getByArticleId(articleId);
+      setComments(updatedComments);
+      setReviewText("");
+      setVisibility("visible"); // Reset to default
+    } catch (error) {
+      console.error("Failed to post comment:", error);
+    }
   }
+
+  async function handleStatusChange(newStatus) {
+    try {
+      const updatedArticle = await articleRequests.updateStatus(
+        articleId,
+        newStatus
+      );
+      setArticle(updatedArticle);
+    } catch (error) {
+      console.error("Failed to update status:", error);
+    }
+  }
+
+  if (!article || loading) {
+    return <div className={styles.container}>Loading article...</div>;
+  }
+
+  const isOrganizer = currentUser?.role === "ORGANIZER";
+  const isAssignedReviewer =
+    currentUser?.id === article.reviewer1Id ||
+    currentUser?.id === article.reviewer2Id;
+  const canEditStatus = isOrganizer || isAssignedReviewer;
+
+  // Authors can only see and write public comments
+  const canWriteInternalComments = isOrganizer || isAssignedReviewer;
+
+  // Filter comments based on visibility permissions
+  const visibleComments = comments.filter((comment) => {
+    if (comment.isPublic) return true;
+    // Internal comments: only organizers and assigned reviewers can see
+    return isOrganizer || isAssignedReviewer;
+  });
 
   return (
     <div className={styles.container}>
       {/* PDF Viewer Section */}
       <div className={styles.pdfSection}>
-        <h2>Research Article PDF</h2>
+        <div className={styles.headerWithStatus}>
+          <h2>Research Article PDF</h2>
+          <div className={styles.statusContainer}>
+            <label>Status:</label>
+            {canEditStatus ? (
+              <select
+                className={styles.statusSelect}
+                value={article.status}
+                onChange={(e) => handleStatusChange(e.target.value)}
+              >
+                <option value="IN_REVIEW">In Review</option>
+                <option value="REVISION_REQUIRED">Revision Required</option>
+                <option value="ACCEPTED">Accepted</option>
+                <option value="REJECTED">Rejected</option>
+              </select>
+            ) : (
+              <span
+                className={`${styles.statusBadge} ${
+                  styles[article.status.toLowerCase()]
+                }`}
+              >
+                {article.status.replace(/_/g, " ")}
+              </span>
+            )}
+          </div>
+        </div>
         <div className={styles.pdfViewer}>
           <Document
             file={samplePdfUrl}
@@ -91,7 +162,7 @@ export default function Article() {
 
       {/* Comments Section */}
       <div className={styles.commentsSection}>
-        <h2>Review Comments ({mockComments.length})</h2>
+        <h2>Review Comments ({visibleComments.length})</h2>
 
         <div className={styles.writeReview}>
           <textarea
@@ -102,46 +173,50 @@ export default function Article() {
             rows={4}
           />
           <div className={styles.reviewActions}>
-            <select
-              className={styles.visibilitySelect}
-              value={visibility}
-              onChange={(e) => setVisibility(e.target.value)}
-            >
-              <option value="visible">Visible to Author</option>
-              <option value="internal">Internal Only</option>
-            </select>
+            {canWriteInternalComments && (
+              <select
+                className={styles.visibilitySelect}
+                value={visibility}
+                onChange={(e) => setVisibility(e.target.value)}
+              >
+                <option value="visible">Visible to Author</option>
+                <option value="internal">Internal Only</option>
+              </select>
+            )}
             <button className={styles.sendButton} onClick={handleSendReview}>
               Send
             </button>
           </div>
         </div>
 
-        <div className={styles.commentsList}>
-          {mockComments.map((comment) => (
-            <div key={comment.id} className={styles.comment}>
-              <div className={styles.commentHeader}>
-                <span className={styles.commentId}>
-                  {comment.id.substring(0, 8)}...
-                </span>
-                <span className={styles.commentDate}>
-                  {formatDate(comment.createdAt)}
+        {visibleComments.length > 0 ? (
+          <div className={styles.commentsList}>
+            {visibleComments.map((comment) => (
+              <div key={comment.id} className={styles.comment}>
+                <div className={styles.commentHeader}>
+                  <span className={styles.commentId}>
+                    {comment.id.substring(0, 8)}...
+                  </span>
+                  <span className={styles.commentDate}>
+                    {formatDate(comment.createdAt)}
+                  </span>
+                </div>
+                <p className={styles.commentText}>{comment.text}</p>
+                <span
+                  className={`${styles.commentBadge} ${
+                    comment.isPublic ? styles.visibleBadge : styles.hiddenBadge
+                  }`}
+                >
+                  {comment.isPublic ? "Visible to Author" : "Internal Only"}
                 </span>
               </div>
-              <p className={styles.commentText}>{comment.text}</p>
-              <span
-                className={`${styles.commentBadge} ${
-                  comment.isVisibleToAuthor
-                    ? styles.visibleBadge
-                    : styles.hiddenBadge
-                }`}
-              >
-                {comment.isVisibleToAuthor
-                  ? "Visible to Author"
-                  : "Internal Only"}
-              </span>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        ) : (
+          <div className={styles.commentsList}>
+            <p>No comments yet. Be the first to leave feedback!</p>
+          </div>
+        )}
       </div>
     </div>
   );

@@ -1,13 +1,12 @@
 import { Link, Route, Routes } from "react-router-dom";
 import styles from "./App.module.css";
-import About from "./pages/About";
+import { useUser } from "./contexts/UserContext";
+import Article from "./pages/Article";
 import Conference from "./pages/Conference";
 import Conferences from "./pages/Conferences";
-import NotFound from "./pages/NotFound";
-import Article from "./pages/Article";
-import { useUser } from "./contexts/UserContext";
 import CreateConference from "./pages/CreateConference";
 import JoinConference from "./pages/JoinConference";
+import NotFound from "./pages/NotFound";
 
 export default function App() {
   const { currentUser, switchUser, allUsers } = useUser();
@@ -45,7 +44,6 @@ export default function App() {
           <Route path="/conferences/:id" element={<Conference />} />
           <Route path="/conferences/:id/join" element={<JoinConference />} />
           <Route path="/conferences/:id/articles/:id" element={<Article />} />
-          <Route path="/about" element={<About />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </div>

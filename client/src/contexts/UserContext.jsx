@@ -2,6 +2,8 @@ import { createContext, useContext, useState } from "react";
 
 const UserContext = createContext();
 
+export { UserContext };
+
 // Users matching the seeded database IDs
 const MOCK_USERS = [
   {
