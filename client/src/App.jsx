@@ -7,6 +7,7 @@ import NotFound from "./pages/NotFound";
 import Article from "./pages/Article";
 import { useUser } from "./contexts/UserContext";
 import CreateConference from "./pages/CreateConference";
+import JoinConference from "./pages/JoinConference";
 
 export default function App() {
   const { currentUser, switchUser, allUsers } = useUser();
@@ -42,6 +43,7 @@ export default function App() {
           <Route path="/conferences" element={<Conferences />} />
           <Route path="/conferences/create" element={<CreateConference />} />
           <Route path="/conferences/:id" element={<Conference />} />
+          <Route path="/conferences/:id/join" element={<JoinConference />} />
           <Route path="/conferences/:id/articles/:id" element={<Article />} />
           <Route path="/about" element={<About />} />
           <Route path="*" element={<NotFound />} />

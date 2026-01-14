@@ -1,12 +1,14 @@
 import { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import ArticleCard from "../components/articles/ArticleCard";
 import conferenceRequests from "../api/conferenceRequests";
 import articleRequests from "../api/articleRequests";
+import { useUser } from "../contexts/UserContext";
 import styles from "./Conference.module.css";
 
 export default function Conference() {
   const { id } = useParams();
+  const { currentUser } = useUser();
   const [conference, setConference] = useState(null);
   const [articles, setArticles] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -41,6 +43,11 @@ export default function Conference() {
     return <div className={styles.container}>Conference not found</div>;
   }
 
+  const hasJoined = articles.some(
+    (article) => article.authorId === currentUser.id
+  );
+  const isAuthor = currentUser.role === "AUTHOR";
+
   return (
     <div className={styles.container}>
       <div className={styles.conferece}>
@@ -53,9 +60,22 @@ export default function Conference() {
           {new Date(conference.endDate).toLocaleDateString()}
         </p>
 
-        <div className={styles.join_container}>
-          <button className={styles.join_button}>Join</button>
-        </div>
+        {isAuthor && (
+          <div className={styles.join_container}>
+            {!hasJoined ? (
+              <Link
+                to={`/conferences/${id}/join`}
+                className={styles.join_button}
+              >
+                Join
+              </Link>
+            ) : (
+              <button className={styles.join_button} disabled>
+                Joined
+              </button>
+            )}
+          </div>
+        )}
       </div>
 
       <>

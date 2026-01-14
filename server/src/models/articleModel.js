@@ -48,6 +48,12 @@ const Article = database.define("Article", {
     allowNull: false,
     defaultValue: [],
   },
+  reviewer1Id: {
+    type: DataTypes.UUID,
+  },
+  reviewer2Id: {
+    type: DataTypes.UUID,
+  },
 });
 
 export default Article;

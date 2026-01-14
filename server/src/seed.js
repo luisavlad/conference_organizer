@@ -190,6 +190,8 @@ async function seed() {
         conferenceId: C_IDS.CONF1, // Tech Summit
         currentVersion: 1,
         versions: [{ v: 1, date: new Date().toISOString() }],
+        reviewer1Id: U_IDS.REV1,
+        reviewer2Id: U_IDS.REV2,
       },
       {
         id: A_IDS.ART2,
@@ -204,6 +206,8 @@ async function seed() {
           { v: 1, date: "2026-01-01" },
           { v: 2, date: "2026-02-01" },
         ],
+        reviewer1Id: U_IDS.REV2,
+        reviewer2Id: U_IDS.REV4,
       },
       {
         id: A_IDS.ART3,
@@ -215,6 +219,8 @@ async function seed() {
         conferenceId: C_IDS.CONF3, // Art Expo
         currentVersion: 1,
         versions: [{ v: 1, date: new Date().toISOString() }],
+        reviewer1Id: U_IDS.REV3,
+        reviewer2Id: U_IDS.REV5,
       },
       {
         id: A_IDS.ART4,
@@ -226,6 +232,8 @@ async function seed() {
         conferenceId: C_IDS.CONF4, // CyberSec
         currentVersion: 1,
         versions: [{ v: 1, date: new Date().toISOString() }],
+        reviewer1Id: U_IDS.REV1,
+        reviewer2Id: U_IDS.REV5,
       },
       {
         id: A_IDS.ART5,
@@ -237,6 +245,8 @@ async function seed() {
         conferenceId: C_IDS.CONF5, // EduTech
         currentVersion: 1,
         versions: [{ v: 1, date: new Date().toISOString() }],
+        reviewer1Id: U_IDS.REV2,
+        reviewer2Id: U_IDS.REV5,
       },
     ]);
 

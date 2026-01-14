@@ -2,25 +2,31 @@ import { createContext, useContext, useState } from "react";
 
 const UserContext = createContext();
 
-// Mock users with different roles and database-linked IDs
+// Users matching the seeded database IDs
 const MOCK_USERS = [
   {
-    id: "a1b2c3d4-e5f6-4a5b-8c9d-0e1f2a3b4c5d",
-    name: "John Smith",
-    role: "Reviewer",
-    email: "john.reviewer@conference.com",
+    id: "11111111-1111-4111-1111-111111111111",
+    name: "Alice Organizer",
+    role: "ORGANIZER",
+    email: "alice@conf.com",
   },
   {
-    id: "b2c3d4e5-f6a7-4b5c-9d0e-1f2a3b4c5d6e",
-    name: "Sarah Johnson",
-    role: "Author",
-    email: "sarah.author@conference.com",
+    id: "22222222-2222-4222-2222-111111111111",
+    name: "Charlie Reviewer",
+    role: "REVIEWER",
+    email: "charlie@rev.com",
   },
   {
-    id: "c3d4e5f6-a7b8-4c5d-0e1f-2a3b4c5d6e7f",
-    name: "Michael Chen",
-    role: "Organizer",
-    email: "michael.organizer@conference.com",
+    id: "33333333-3333-4333-3333-111111111111",
+    name: "Hannah Author",
+    role: "AUTHOR",
+    email: "hannah@uni.edu",
+  },
+  {
+    id: "33333333-3333-4333-3333-222222222222",
+    name: "Ian Author",
+    role: "AUTHOR",
+    email: "ian@uni.edu",
   },
 ];
 

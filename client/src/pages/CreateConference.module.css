@@ -64,3 +64,40 @@
   align-self: flex-end;
   font-size: var(--fontsize--medium);
 }
+
+.dropZone {
+  border: 2px dashed var(--background--lines);
+  border-radius: 6px;
+  padding: 2rem;
+  text-align: center;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.dropZone:hover {
+  border-color: var(--primary-color);
+  background-color: rgba(0, 123, 255, 0.05);
+}
+
+.dragActive {
+  border-color: var(--primary-color);
+  background-color: rgba(0, 123, 255, 0.1);
+}
+
+.fileInput {
+  display: none;
+}
+
+.fileLabel {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  cursor: pointer;
+  font-size: var(--fontsize--large);
+  font-weight: 400;
+}
+
+.fileSize {
+  font-size: var(--fontsize--small);
+  color: #666;
+}

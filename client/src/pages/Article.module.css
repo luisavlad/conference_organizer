@@ -28,6 +28,7 @@
 
 .commentsSection {
   flex: 1;
+  min-width: 40rem;
   max-width: 60rem;
   border: 1px solid var(--background--lines);
   border-radius: 8px;
