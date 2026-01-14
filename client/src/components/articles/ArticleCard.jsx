@@ -12,6 +12,9 @@ export default function ArticleCard({ article, conferenceId, currentUser }) {
     article.reviewer2Id === currentUser.id;
 
   const canAccess = isAuthor || isOrganizer || isAssignedReviewer;
+  const needsRevision =
+    isAuthor &&
+    (article.status === "REVISION_REQUIRED" || article.status === "REJECTED");
 
   const content = (
     <>
@@ -21,6 +24,15 @@ export default function ArticleCard({ article, conferenceId, currentUser }) {
       <p>Version: {article.currentVersion}</p>
       <p>Submitted: {new Date(article.createdAt).toLocaleDateString()}</p>
       <p>Last Updated: {new Date(article.updatedAt).toLocaleDateString()}</p>
+      {needsRevision && (
+        <Link
+          to={`/conferences/${conferenceId}/articles/${articleId}/edit`}
+          className={styles.editButton}
+          onClick={(e) => e.stopPropagation()}
+        >
+          Edit Article
+        </Link>
+      )}
     </>
   );
 

@@ -20,6 +20,15 @@ const articleRequests = {
     return response.data.data.article;
   },
 
+  async update(articleId, formData) {
+    const response = await apiClient.patch(`/articles/${articleId}`, formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
+    return response.data.data.article;
+  },
+
   async create(formData) {
     const response = await apiClient.post("/articles", formData, {
       headers: {

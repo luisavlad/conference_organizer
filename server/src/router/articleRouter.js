@@ -12,6 +12,10 @@ articleRouter.route("/").post(upload.single("pdf"), articleController.create);
 
 articleRouter.route("/:id").get(articleController.getById);
 
+articleRouter
+  .route("/:id")
+  .patch(upload.single("pdf"), articleController.update);
+
 articleRouter.route("/:id/status").patch(articleController.updateStatus);
 
 articleRouter.route("/:id/pdf").get(articleController.getPdf);

@@ -101,3 +101,63 @@
   font-size: var(--fontsize--small);
   color: #666;
 }
+
+.hint {
+  font-size: var(--fontsize--small);
+  color: #888;
+}
+
+.dragging {
+  border-color: var(--primary-color);
+  background-color: rgba(0, 123, 255, 0.1);
+}
+
+.infoBox {
+  background-color: #f0f9ff;
+  border: 1px solid #bae6fd;
+  border-radius: 6px;
+  padding: 1rem;
+  margin-top: 1rem;
+}
+
+.infoBox p {
+  margin: 0.5rem 0;
+  font-size: var(--fontsize--medium);
+}
+
+.buttonGroup {
+  display: flex;
+  gap: 1rem;
+  justify-content: flex-end;
+  margin-top: 1rem;
+}
+
+.cancelButton,
+.submitButton {
+  padding: 0.75rem 2rem;
+  border: 1px solid var(--background--lines);
+  border-radius: 8px;
+  font-size: var(--fontsize--medium);
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.cancelButton {
+  background-color: transparent;
+  color: var(--text-color);
+}
+
+.cancelButton:hover {
+  background-color: var(--background--hover);
+}
+
+.submitButton {
+  background-color: var(--primary-color, #3b82f6);
+  color: white;
+  border-color: var(--primary-color, #3b82f6);
+}
+
+.submitButton:hover {
+  background-color: var(--primary-dark, #2563eb);
+}

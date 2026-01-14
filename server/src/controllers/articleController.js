@@ -1,4 +1,4 @@
-import { Article, Conference } from "../models/index.js";
+import { Article, Conference, User } from "../models/index.js";
 import path from "path";
 import { fileURLToPath } from "url";
 import fs from "fs";
@@ -166,10 +166,28 @@ const articleController = {
         });
       }
 
+      // Fetch reviewer information
+      const reviewers = [];
+      if (article.reviewer1Id) {
+        const reviewer1 = await User.findByPk(article.reviewer1Id, {
+          attributes: ["id", "name", "email"],
+        });
+        if (reviewer1) reviewers.push(reviewer1);
+      }
+      if (article.reviewer2Id) {
+        const reviewer2 = await User.findByPk(article.reviewer2Id, {
+          attributes: ["id", "name", "email"],
+        });
+        if (reviewer2) reviewers.push(reviewer2);
+      }
+
       res.status(200).json({
         status: "success",
         data: {
-          article,
+          article: {
+            ...article.toJSON(),
+            reviewers,
+          },
         },
       });
     } catch (err) {
@@ -223,6 +241,76 @@ const articleController = {
       res.status(500).json({
         status: "error",
         message: "Failed to update article status.",
+      });
+    }
+  },
+
+  update: async (req, res) => {
+    try {
+      const { id } = req.params;
+      const { title, summary } = req.body;
+
+      if (!req.file) {
+        return res.status(400).json({
+          status: "error",
+          message: "PDF file is required for article update.",
+        });
+      }
+
+      const article = await Article.findByPk(id);
+
+      if (!article) {
+        return res.status(404).json({
+          status: "error",
+          message: "Article not found.",
+        });
+      }
+
+      // Store the old PDF path for version history
+      const oldPdfUrl = article.pdfUrl;
+      const newVersion = article.currentVersion + 1;
+      const newPdfUrl = `/uploads/articles/${req.file.filename}`;
+
+      // Update versions history
+      const updatedVersions = [
+        ...article.versions,
+        {
+          v: article.currentVersion,
+          date: article.updatedAt,
+          pdfUrl: oldPdfUrl,
+        },
+      ];
+
+      // Update article
+      article.title = title || article.title;
+      article.summary = summary || article.summary;
+      article.pdfUrl = newPdfUrl;
+      article.currentVersion = newVersion;
+      article.versions = updatedVersions;
+      article.status = "IN_REVIEW"; // Reset to IN_REVIEW after update
+
+      await article.save();
+
+      res.status(200).json({
+        status: "success",
+        data: {
+          article,
+        },
+      });
+    } catch (err) {
+      console.error("Article update error:", err);
+      // Delete uploaded file if update fails
+      if (req.file) {
+        try {
+          fs.unlinkSync(req.file.path);
+        } catch (unlinkErr) {
+          console.error("Failed to delete file:", unlinkErr);
+        }
+      }
+      res.status(500).json({
+        status: "error",
+        message: "Failed to update article.",
+        error: err.message,
       });
     }
   },

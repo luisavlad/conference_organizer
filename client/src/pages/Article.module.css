@@ -64,6 +64,43 @@
   color: white;
 }
 
+.reviewersInfo {
+  background-color: #f9fafb;
+  border: 1px solid var(--background--lines);
+  border-radius: 8px;
+  padding: 1rem;
+  margin-top: 1rem;
+
+  font-size: var(--fontsize--medium);
+}
+
+.reviewersInfo h3 {
+  margin: 0 0 0.75rem 0;
+  font-weight: 600;
+  color: #374151;
+}
+
+.reviewersList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.reviewersList li {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.reviewerEmail {
+  font-size: 0.875rem;
+  color: #6b7280;
+  font-size: var(--fontsize--medium);
+}
+
 .pdfViewer {
   height: 70vh;
   overflow-y: auto;

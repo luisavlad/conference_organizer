@@ -143,6 +143,20 @@ export default function Article() {
             )}
           </div>
         </div>
+
+        {article.reviewers && article.reviewers.length > 0 && (
+          <div className={styles.reviewersInfo}>
+            <h3>Assigned Reviewers:</h3>
+            <ul className={styles.reviewersList}>
+              {article.reviewers.map((reviewer) => (
+                <li key={reviewer.id}>
+                  <strong>{reviewer.name}</strong>
+                  <span className={styles.reviewerEmail}>{reviewer.email}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
         <div className={styles.pdfViewer}>
           <Document
             file={samplePdfUrl}

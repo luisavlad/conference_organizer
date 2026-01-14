@@ -5,6 +5,7 @@ import Article from "./pages/Article";
 import Conference from "./pages/Conference";
 import Conferences from "./pages/Conferences";
 import CreateConference from "./pages/CreateConference";
+import EditArticle from "./pages/EditArticle";
 import JoinConference from "./pages/JoinConference";
 import NotFound from "./pages/NotFound";
 
@@ -44,6 +45,10 @@ export default function App() {
           <Route path="/conferences/:id" element={<Conference />} />
           <Route path="/conferences/:id/join" element={<JoinConference />} />
           <Route path="/conferences/:id/articles/:id" element={<Article />} />
+          <Route
+            path="/conferences/:conferenceId/articles/:articleId/edit"
+            element={<EditArticle />}
+          />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </div>
