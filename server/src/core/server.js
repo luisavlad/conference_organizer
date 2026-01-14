@@ -5,12 +5,17 @@ const PORT = process.env.PORT || 8080;
 
 async function initDb() {
   try {
-    await database.query("PRAGMA foreign_keys = OFF");
+    // Only run PRAGMA commands for SQLite, not PostgreSQL
+    if (!process.env.DATABASE_URL) {
+      await database.query("PRAGMA foreign_keys = OFF");
+    }
 
     await database.sync();
     console.log("All models were successfully synchronized");
 
-    await database.query("PRAGMA foreign_keys = ON");
+    if (!process.env.DATABASE_URL) {
+      await database.query("PRAGMA foreign_keys = ON");
+    }
 
     app.listen(PORT, () => {
       console.log(`App is running on port ${PORT}...`);
