@@ -16,14 +16,18 @@ const samplePdfData = fs.readFileSync(samplePdfPath);
 const U_IDS = {
   ORG1: "11111111-1111-4111-1111-111111111111",
   ORG2: "11111111-1111-4111-1111-222222222222",
+  ORG3: "11111111-1111-4111-1111-333333333333",
   REV1: "22222222-2222-4222-2222-111111111111",
   REV2: "22222222-2222-4222-2222-222222222222",
   REV3: "22222222-2222-4222-2222-333333333333",
   REV4: "22222222-2222-4222-2222-444444444444",
   REV5: "22222222-2222-4222-2222-555555555555",
+  REV6: "22222222-2222-4222-2222-666666666666",
   AUTH1: "33333333-3333-4333-3333-111111111111",
   AUTH2: "33333333-3333-4333-3333-222222222222",
   AUTH3: "33333333-3333-4333-3333-333333333333",
+  AUTH4: "33333333-3333-4333-3333-444444444444",
+  AUTH5: "33333333-3333-4333-3333-555555555555",
 };
 
 const C_IDS = {
@@ -98,6 +102,12 @@ async function seed() {
         email: "george@rev.com",
         role: "REVIEWER",
       },
+      {
+        id: U_IDS.REV6,
+        name: "Kelly Reviewer",
+        email: "kelly@rev.com",
+        role: "REVIEWER",
+      },
       // Authors
       {
         id: U_IDS.AUTH1,
@@ -116,6 +126,24 @@ async function seed() {
         name: "Julia Author",
         email: "julia@uni.edu",
         role: "AUTHOR",
+      },
+      {
+        id: U_IDS.AUTH4,
+        name: "Kevin Author",
+        email: "kevin@uni.edu",
+        role: "AUTHOR",
+      },
+      {
+        id: U_IDS.AUTH5,
+        name: "Laura Author",
+        email: "laura@uni.edu",
+        role: "AUTHOR",
+      },
+      {
+        id: U_IDS.ORG3,
+        name: "Mark Organizer",
+        email: "mark@conf.com",
+        role: "ORGANIZER",
       },
     ]);
 
