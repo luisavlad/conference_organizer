@@ -64,6 +64,36 @@
   color: white;
 }
 
+.revisionNotice {
+  background-color: #fef3c7;
+  border: 2px solid #f59e0b;
+  border-radius: 8px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+}
+
+.revisionNotice p {
+  margin: 0 0 0.75rem 0;
+  color: #92400e;
+  font-weight: 500;
+}
+
+.uploadNewVersionBtn {
+  background-color: #f59e0b;
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  font-size: var(--fontsize--medium);
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.uploadNewVersionBtn:hover {
+  background-color: #d97706;
+}
+
 .reviewersInfo {
   background-color: #f9fafb;
   border: 1px solid var(--background--lines);
