@@ -11,7 +11,7 @@ import styles from "./Article.module.css";
 pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`;
 
 export default function Article() {
-  const { id: articleId } = useParams();
+  const { articleId } = useParams();
   const { currentUser } = useContext(UserContext);
   const [numPages, setNumPages] = useState(null);
   const [reviewText, setReviewText] = useState("");

@@ -44,7 +44,7 @@ export default function App() {
           <Route path="/conferences/create" element={<CreateConference />} />
           <Route path="/conferences/:id" element={<Conference />} />
           <Route path="/conferences/:id/join" element={<JoinConference />} />
-          <Route path="/conferences/:id/articles/:id" element={<Article />} />
+          <Route path="/conferences/:conferenceId/articles/:articleId" element={<Article />} />
           <Route
             path="/conferences/:conferenceId/articles/:articleId/edit"
             element={<EditArticle />}
