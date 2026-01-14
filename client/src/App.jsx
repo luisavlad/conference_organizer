@@ -37,10 +37,10 @@ export default function App() {
       return currentConference.articles?.some(article => article.authorId === user.id) ?? true;
     }
     if (user.role === "REVIEWER") {
-      // Reviewers assigned to any article in this conference
-      return currentConference.articles?.some(article => 
-        article.reviewer1Id === user.id || article.reviewer2Id === user.id
-      ) ?? true;
+      // Reviewers assigned to this conference
+      return user.id === currentConference.reviewer1 || 
+             user.id === currentConference.reviewer2 || 
+             user.id === currentConference.reviewer3;
     }
     return false;
   };
