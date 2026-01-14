@@ -46,6 +46,12 @@ const A_IDS = {
   ART5: "12345678-1234-4123-1234-1234567890af",
 };
 
+// Helper function to randomly select 3 different reviewers
+function getRandomReviewers(allReviewers) {
+  const shuffled = [...allReviewers].sort(() => Math.random() - 0.5);
+  return shuffled.slice(0, 3);
+}
+
 async function seed() {
   try {
     console.log("🔄 Syncing database...");
@@ -151,6 +157,17 @@ async function seed() {
     // 2. Create Conferences
     // ---------------------------------------------------------
     console.log("📅 Seeding Conferences...");
+    
+    // All reviewer IDs for random selection
+    const allReviewerIds = [U_IDS.REV1, U_IDS.REV2, U_IDS.REV3, U_IDS.REV4, U_IDS.REV5, U_IDS.REV6];
+    
+    // Generate random reviewers for each conference
+    const conf1Reviewers = getRandomReviewers(allReviewerIds);
+    const conf2Reviewers = getRandomReviewers(allReviewerIds);
+    const conf3Reviewers = getRandomReviewers(allReviewerIds);
+    const conf4Reviewers = getRandomReviewers(allReviewerIds);
+    const conf5Reviewers = getRandomReviewers(allReviewerIds);
+    
     const conferences = await Conference.bulkCreate([
       {
         id: C_IDS.CONF1,
@@ -159,9 +176,9 @@ async function seed() {
         location: "San Francisco, CA",
         startDate: new Date("2026-06-01"),
         endDate: new Date("2026-06-03"),
-        reviewer1: U_IDS.REV1,
-        reviewer2: U_IDS.REV2,
-        reviewer3: U_IDS.REV3,
+        reviewer1: conf1Reviewers[0],
+        reviewer2: conf1Reviewers[1],
+        reviewer3: conf1Reviewers[2],
         articles: [A_IDS.ART1],
       },
       {
@@ -171,9 +188,9 @@ async function seed() {
         location: "London, UK",
         startDate: new Date("2026-07-15"),
         endDate: new Date("2026-07-17"),
-        reviewer1: U_IDS.REV2,
-        reviewer2: U_IDS.REV3,
-        reviewer3: U_IDS.REV4,
+        reviewer1: conf2Reviewers[0],
+        reviewer2: conf2Reviewers[1],
+        reviewer3: conf2Reviewers[2],
         articles: [A_IDS.ART2],
       },
       {
@@ -183,9 +200,9 @@ async function seed() {
         location: "Paris, France",
         startDate: new Date("2026-08-10"),
         endDate: new Date("2026-08-12"),
-        reviewer1: U_IDS.REV3,
-        reviewer2: U_IDS.REV4,
-        reviewer3: U_IDS.REV5,
+        reviewer1: conf3Reviewers[0],
+        reviewer2: conf3Reviewers[1],
+        reviewer3: conf3Reviewers[2],
         articles: [A_IDS.ART3],
       },
       {
@@ -195,9 +212,9 @@ async function seed() {
         location: "Berlin, Germany",
         startDate: new Date("2026-09-05"),
         endDate: new Date("2026-09-07"),
-        reviewer1: U_IDS.REV1,
-        reviewer2: U_IDS.REV4,
-        reviewer3: U_IDS.REV5,
+        reviewer1: conf4Reviewers[0],
+        reviewer2: conf4Reviewers[1],
+        reviewer3: conf4Reviewers[2],
         articles: [A_IDS.ART4],
       },
       {
@@ -207,9 +224,9 @@ async function seed() {
         location: "Toronto, Canada",
         startDate: new Date("2026-10-20"),
         endDate: new Date("2026-10-22"),
-        reviewer1: U_IDS.REV1,
-        reviewer2: U_IDS.REV2,
-        reviewer3: U_IDS.REV5,
+        reviewer1: conf5Reviewers[0],
+        reviewer2: conf5Reviewers[1],
+        reviewer3: conf5Reviewers[2],
         articles: [A_IDS.ART5],
       },
     ]);
