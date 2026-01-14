@@ -70,13 +70,15 @@ const articleController = {
         selectedReviewers = shuffled.slice(0, 2);
       }
 
-      // Store relative path to the uploaded file
-      const pdfUrl = `/uploads/articles/${req.file.filename}`;
+      // Read PDF file as binary data
+      const pdfData = fs.readFileSync(req.file.path);
 
       const newArticle = await Article.create({
         title,
         summary,
-        pdfUrl,
+        pdfData: pdfData,
+        pdfMimeType: req.file.mimetype,
+        pdfFilename: req.file.originalname,
         conferenceId,
         authorId,
         status: "IN_REVIEW",
@@ -85,6 +87,13 @@ const articleController = {
         reviewer1Id: selectedReviewers[0] || null,
         reviewer2Id: selectedReviewers[1] || null,
       });
+
+      // Delete uploaded file after saving to database
+      try {
+        fs.unlinkSync(req.file.path);
+      } catch (unlinkErr) {
+        console.error("Failed to delete temporary file:", unlinkErr);
+      }
 
       res.status(201).json({
         status: "success",
@@ -114,7 +123,9 @@ const articleController = {
     try {
       const { id } = req.params;
 
-      const article = await Article.findByPk(id);
+      const article = await Article.findByPk(id, {
+        attributes: ['id', 'pdfData', 'pdfMimeType', 'pdfFilename', 'title']
+      });
 
       if (!article) {
         return res.status(404).json({
@@ -123,11 +134,7 @@ const articleController = {
         });
       }
 
-      // Build absolute path to the PDF file
-      const filePath = path.join(__dirname, "../../", article.pdfUrl);
-
-      // Check if file exists
-      if (!fs.existsSync(filePath)) {
+      if (!article.pdfData) {
         return res.status(404).json({
           status: "error",
           message: "PDF file not found.",
@@ -135,15 +142,14 @@ const articleController = {
       }
 
       // Set appropriate headers
-      res.setHeader("Content-Type", "application/pdf");
+      res.setHeader("Content-Type", article.pdfMimeType || "application/pdf");
       res.setHeader(
         "Content-Disposition",
-        `inline; filename="${article.title}.pdf"`
+        `inline; filename="${article.pdfFilename || article.title + '.pdf'}"`
       );
 
-      // Stream the file
-      const fileStream = fs.createReadStream(filePath);
-      fileStream.pipe(res);
+      // Send the binary PDF data
+      res.send(article.pdfData);
     } catch (err) {
       console.error(err);
       res.status(500).json({

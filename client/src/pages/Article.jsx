@@ -157,7 +157,7 @@ export default function Article() {
         )}
         <div className={styles.pdfViewer}>
           <Document
-            file={`${import.meta.env.VITE_API_URL?.replace('/api', '') || 'http://localhost:8080'}${article.pdfUrl}`}
+            file={`${import.meta.env.VITE_API_URL?.replace('/api', '') || 'http://localhost:8080'}/api/articles/${articleId}/pdf`}
             onLoadSuccess={onDocumentLoadSuccess}
             loading={<div>Loading PDF...</div>}
           >

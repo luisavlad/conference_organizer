@@ -14,9 +14,21 @@ const Article = database.define("Article", {
   },
   pdfUrl: {
     type: DataTypes.STRING,
-    allowNull: false,
+    allowNull: true, // Keep for backward compatibility, but will be deprecated
   },
-
+  pdfData: {
+    type: DataTypes.BLOB('long'), // Store PDF binary data
+    allowNull: true,
+  },
+  pdfMimeType: {
+    type: DataTypes.STRING,
+    allowNull: true,
+    defaultValue: 'application/pdf',
+  },
+  pdfFilename: {
+    type: DataTypes.STRING,
+    allowNull: true,
+  },
   summary: {
     type: DataTypes.TEXT,
   },
