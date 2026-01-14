@@ -4,7 +4,6 @@ import styles from "./ArticleCard.module.css";
 export default function ArticleCard({ article, conferenceId, currentUser }) {
   const { id: articleId } = article;
 
-  // Check if user can access this article
   const isAuthor = article.authorId === currentUser.id;
   const isOrganizer = currentUser.role === "ORGANIZER";
   const isAssignedReviewer =

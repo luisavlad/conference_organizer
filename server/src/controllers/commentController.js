@@ -1,6 +1,9 @@
 import { Comment, User } from "../models/index.js";
 
 const commentController = {
+  // ---------------------------------------------------------
+  // Retrieve all comments for a specific article
+  // ---------------------------------------------------------
   getByArticleId: async (req, res) => {
     try {
       const { articleId } = req.params;
@@ -34,6 +37,9 @@ const commentController = {
     }
   },
 
+  // ---------------------------------------------------------
+  // Create a new comment on an article
+  // ---------------------------------------------------------
   create: async (req, res) => {
     try {
       const { text, isPublic, articleId, userId } = req.body;

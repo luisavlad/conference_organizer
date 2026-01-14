@@ -8,11 +8,9 @@ import { fileURLToPath } from "url";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// Read the sample PDF file
 const samplePdfPath = path.join(__dirname, "../../client/public/mock/sample.pdf");
 const samplePdfData = fs.readFileSync(samplePdfPath);
 
-// Hardcoded UUIDs to ensure connections are consistent and "real"
 const U_IDS = {
   ORG1: "11111111-1111-4111-1111-111111111111",
   ORG2: "11111111-1111-4111-1111-222222222222",
@@ -46,7 +44,6 @@ const A_IDS = {
   ART5: "12345678-1234-4123-1234-1234567890af",
 };
 
-// Helper function to randomly select 3 different reviewers
 function getRandomReviewers(allReviewers) {
   const shuffled = [...allReviewers].sort(() => Math.random() - 0.5);
   return shuffled.slice(0, 3);
@@ -55,7 +52,6 @@ function getRandomReviewers(allReviewers) {
 async function seed() {
   try {
     console.log("🔄 Syncing database...");
-    // Force: true drops tables if they exist
     await database.sync({ force: true });
     console.log("✅ Database synced.");
 
@@ -64,7 +60,6 @@ async function seed() {
     // ---------------------------------------------------------
     console.log("👤 Seeding Users...");
     const users = await User.bulkCreate([
-      // Organizers
       {
         id: U_IDS.ORG1,
         name: "Alice Organizer",
@@ -77,7 +72,6 @@ async function seed() {
         email: "bob@conf.com",
         role: "ORGANIZER",
       },
-      // Reviewers
       {
         id: U_IDS.REV1,
         name: "Charlie Reviewer",
@@ -114,7 +108,6 @@ async function seed() {
         email: "kelly@rev.com",
         role: "REVIEWER",
       },
-      // Authors
       {
         id: U_IDS.AUTH1,
         name: "Hannah Author",
@@ -158,10 +151,8 @@ async function seed() {
     // ---------------------------------------------------------
     console.log("📅 Seeding Conferences...");
     
-    // All reviewer IDs for random selection
     const allReviewerIds = [U_IDS.REV1, U_IDS.REV2, U_IDS.REV3, U_IDS.REV4, U_IDS.REV5, U_IDS.REV6];
     
-    // Generate random reviewers for each conference
     const conf1Reviewers = getRandomReviewers(allReviewerIds);
     const conf2Reviewers = getRandomReviewers(allReviewerIds);
     const conf3Reviewers = getRandomReviewers(allReviewerIds);
@@ -245,7 +236,7 @@ async function seed() {
         pdfFilename: "advances-neural-networks.pdf",
         status: "IN_REVIEW",
         authorId: U_IDS.AUTH1,
-        conferenceId: C_IDS.CONF1, // Tech Summit
+        conferenceId: C_IDS.CONF1,
         currentVersion: 1,
         versions: [{ v: 1, date: new Date().toISOString() }],
         reviewer1Id: U_IDS.REV1,
@@ -260,7 +251,7 @@ async function seed() {
         pdfFilename: "crispr-applications.pdf",
         status: "ACCEPTED",
         authorId: U_IDS.AUTH2,
-        conferenceId: C_IDS.CONF2, // BioMed
+        conferenceId: C_IDS.CONF2, 
         currentVersion: 2,
         versions: [
           { v: 1, date: "2026-01-01" },
@@ -278,7 +269,7 @@ async function seed() {
         pdfFilename: "digital-renaissance.pdf",
         status: "REVISION_REQUIRED",
         authorId: U_IDS.AUTH3,
-        conferenceId: C_IDS.CONF3, // Art Expo
+        conferenceId: C_IDS.CONF3,
         currentVersion: 1,
         versions: [{ v: 1, date: new Date().toISOString() }],
         reviewer1Id: U_IDS.REV3,
@@ -292,8 +283,8 @@ async function seed() {
         pdfMimeType: "application/pdf",
         pdfFilename: "zero-trust-architecture.pdf",
         status: "IN_REVIEW",
-        authorId: U_IDS.AUTH1, // Same author as Art 1
-        conferenceId: C_IDS.CONF4, // CyberSec
+        authorId: U_IDS.AUTH1,
+        conferenceId: C_IDS.CONF4,
         currentVersion: 1,
         versions: [{ v: 1, date: new Date().toISOString() }],
         reviewer1Id: U_IDS.REV1,
@@ -308,7 +299,7 @@ async function seed() {
         pdfFilename: "gamification-classrooms.pdf",
         status: "REJECTED",
         authorId: U_IDS.AUTH2,
-        conferenceId: C_IDS.CONF5, // EduTech
+        conferenceId: C_IDS.CONF5, 
         currentVersion: 1,
         versions: [{ v: 1, date: new Date().toISOString() }],
         reviewer1Id: U_IDS.REV2,
@@ -321,7 +312,6 @@ async function seed() {
     // ---------------------------------------------------------
     console.log("💬 Seeding Comments...");
     await Comment.bulkCreate([
-      // Feedback on Art 1 (Tech Summit) by Rev 1
       {
         id: "99999999-1111-4999-9999-111111111111",
         userId: U_IDS.REV1,
@@ -329,7 +319,6 @@ async function seed() {
         text: "The methodology section needs more clarity regarding the dataset used.",
         isPublic: true,
       },
-      // Feedback on Art 1 by Rev 2
       {
         id: "99999999-1111-4999-9999-222222222222",
         userId: U_IDS.REV2,
@@ -337,7 +326,6 @@ async function seed() {
         text: "Excellent results, but please fix the typo in the abstract.",
         isPublic: true,
       },
-      // Reply by Author 1 on Art 1
       {
         id: "99999999-1111-4999-9999-333333333333",
         userId: U_IDS.AUTH1,
@@ -345,7 +333,6 @@ async function seed() {
         text: "Thank you. I have updated the dataset description in the new version.",
         isPublic: true,
       },
-      // Feedback on Art 3 (Art Expo) by Rev 4
       {
         id: "99999999-1111-4999-9999-444444444444",
         userId: U_IDS.REV4,
@@ -353,7 +340,6 @@ async function seed() {
         text: "The conclusion assumes trends that are not fully supported by the data.",
         isPublic: true,
       },
-      // Feedback on Art 5 (EduTech) by Rev 5
       {
         id: "99999999-1111-4999-9999-555555555555",
         userId: U_IDS.REV5,

@@ -34,6 +34,9 @@ export default function CreateConference() {
     fetchReviewers();
   }, []);
 
+  // ---------------------------------------------------------
+  // Handle form input changes
+  // ---------------------------------------------------------
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
@@ -48,6 +51,9 @@ export default function CreateConference() {
     }
   };
 
+  // ---------------------------------------------------------
+  // Filter available reviewers excluding selected ones
+  // ---------------------------------------------------------
   const getAvailableReviewers = (currentField) => {
     const selectedReviewers = [
       formData.reviewer1,
@@ -60,6 +66,9 @@ export default function CreateConference() {
     );
   };
 
+  // ---------------------------------------------------------
+  // Validate conference form data
+  // ---------------------------------------------------------
   const validate = () => {
     const newErrors = {};
 
@@ -86,6 +95,9 @@ export default function CreateConference() {
     return newErrors;
   };
 
+  // ---------------------------------------------------------
+  // Submit conference creation form
+  // ---------------------------------------------------------
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -112,7 +124,6 @@ export default function CreateConference() {
       const createdConference = await conferenceRequests.create(conferenceData);
       console.log("Success! Conference created:", createdConference);
 
-      // Redirect to home page
       navigate("/");
     } catch (error) {
       console.error("Failed to create conference:", error);

@@ -1,6 +1,9 @@
 import { Conference } from "../models/index.js";
 
 const conferenceController = {
+  // ---------------------------------------------------------
+  // Retrieve all conferences
+  // ---------------------------------------------------------
   getAllConferences: async (req, res) => {
     try {
       const conferences = await Conference.findAll();
@@ -21,6 +24,9 @@ const conferenceController = {
     }
   },
 
+  // ---------------------------------------------------------
+  // Create a new conference
+  // ---------------------------------------------------------
   createConference: async (req, res) => {
     try {
       const { title, description, location, startDate, endDate, reviewers } =

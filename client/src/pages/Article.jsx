@@ -29,7 +29,7 @@ export default function Article() {
           commentRequests.getByArticleId(articleId),
         ]);
         setArticle(fetchedArticle);
-        setCurrentArticle(fetchedArticle); // Set article in context for header dropdown
+        setCurrentArticle(fetchedArticle);
         setComments(fetchedComments);
       } catch (error) {
         console.error("Failed to fetch data:", error);
@@ -40,14 +40,19 @@ export default function Article() {
 
     fetchData();
 
-    // Clear article from context when leaving the page
     return () => setCurrentArticle(null);
   }, [articleId, setCurrentArticle]);
 
+  // ---------------------------------------------------------
+  // Handle PDF document load completion
+  // ---------------------------------------------------------
   function onDocumentLoadSuccess({ numPages }) {
     setNumPages(numPages);
   }
 
+  // ---------------------------------------------------------
+  // Format date for display in comments
+  // ---------------------------------------------------------
   function formatDate(dateString) {
     return new Date(dateString).toLocaleString("en-US", {
       month: "short",
@@ -58,6 +63,9 @@ export default function Article() {
     });
   }
 
+  // ---------------------------------------------------------
+  // Submit a new review comment
+  // ---------------------------------------------------------
   async function handleSendReview() {
     if (!reviewText.trim()) return;
 
@@ -73,16 +81,18 @@ export default function Article() {
         userId: currentUser.id,
       });
 
-      // Refetch comments to include the new one
       const updatedComments = await commentRequests.getByArticleId(articleId);
       setComments(updatedComments);
       setReviewText("");
-      setVisibility("visible"); // Reset to default
+      setVisibility("visible");
     } catch (error) {
       console.error("Failed to post comment:", error);
     }
   }
 
+  // ---------------------------------------------------------
+  // Update article review status
+  // ---------------------------------------------------------
   async function handleStatusChange(newStatus) {
     try {
       const updatedArticle = await articleRequests.updateStatus(
@@ -105,19 +115,15 @@ export default function Article() {
     currentUser?.id === article.reviewer2Id;
   const canEditStatus = isOrganizer || isAssignedReviewer;
 
-  // Authors can only see and write public comments
   const canWriteInternalComments = isOrganizer || isAssignedReviewer;
 
-  // Filter comments based on visibility permissions
   const visibleComments = comments.filter((comment) => {
     if (comment.isPublic) return true;
-    // Internal comments: only organizers and assigned reviewers can see
     return isOrganizer || isAssignedReviewer;
   });
 
   return (
     <div className={styles.container}>
-      {/* PDF Viewer Section */}
       <div className={styles.pdfSection}>
         <div className={styles.headerWithStatus}>
           <h2>Research Article PDF</h2>
@@ -176,7 +182,6 @@ export default function Article() {
         </div>
       </div>
 
-      {/* Comments Section */}
       <div className={styles.commentsSection}>
         <h2>Review Comments ({visibleComments.length})</h2>
 

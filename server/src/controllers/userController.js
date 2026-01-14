@@ -1,6 +1,9 @@
 import { User } from "../models/index.js";
 
 const userController = {
+  // ---------------------------------------------------------
+  // Retrieve all users with reviewer role
+  // ---------------------------------------------------------
   getAllReviewers: async (req, res) => {
     try {
       const reviewers = await User.findAll({

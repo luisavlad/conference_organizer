@@ -19,6 +19,9 @@ export default function JoinConference() {
   const [errors, setErrors] = useState({});
   const [uploading, setUploading] = useState(false);
 
+  // ---------------------------------------------------------
+  // Handle form input changes
+  // ---------------------------------------------------------
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
@@ -33,6 +36,9 @@ export default function JoinConference() {
     }
   };
 
+  // ---------------------------------------------------------
+  // Handle drag events for file upload
+  // ---------------------------------------------------------
   const handleDrag = (e) => {
     e.preventDefault();
     e.stopPropagation();
@@ -43,6 +49,9 @@ export default function JoinConference() {
     }
   };
 
+  // ---------------------------------------------------------
+  // Handle file drop for PDF upload
+  // ---------------------------------------------------------
   const handleDrop = (e) => {
     e.preventDefault();
     e.stopPropagation();
@@ -54,6 +63,9 @@ export default function JoinConference() {
     }
   };
 
+  // ---------------------------------------------------------
+  // Handle file selection from input
+  // ---------------------------------------------------------
   const handleFileInput = (e) => {
     const files = e.target.files;
     if (files && files[0]) {
@@ -61,6 +73,9 @@ export default function JoinConference() {
     }
   };
 
+  // ---------------------------------------------------------
+  // Validate and set uploaded PDF file
+  // ---------------------------------------------------------
   const handleFile = (file) => {
     if (file.type !== "application/pdf") {
       setErrors((prev) => ({
@@ -85,6 +100,9 @@ export default function JoinConference() {
     }));
   };
 
+  // ---------------------------------------------------------
+  // Validate article submission form
+  // ---------------------------------------------------------
   const validate = () => {
     const newErrors = {};
 
@@ -99,6 +117,9 @@ export default function JoinConference() {
     return newErrors;
   };
 
+  // ---------------------------------------------------------
+  // Submit article to conference
+  // ---------------------------------------------------------
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -121,7 +142,6 @@ export default function JoinConference() {
       const createdArticle = await articleRequests.create(formDataToSend);
       console.log("Success! Article created:", createdArticle);
 
-      // Redirect to conference page
       navigate(`/conferences/${conferenceId}`);
     } catch (error) {
       console.error("Failed to create article:", error);

@@ -5,7 +5,6 @@ const PORT = process.env.PORT || 8080;
 
 async function initDb() {
   try {
-    // Only run PRAGMA commands for SQLite, not PostgreSQL
     if (!process.env.DATABASE_URL) {
       await database.query("PRAGMA foreign_keys = OFF");
     }

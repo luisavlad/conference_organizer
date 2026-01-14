@@ -14,10 +14,10 @@ const Article = database.define("Article", {
   },
   pdfUrl: {
     type: DataTypes.STRING,
-    allowNull: true, // Keep for backward compatibility, but will be deprecated
+    allowNull: true,
   },
   pdfData: {
-    type: DataTypes.BLOB('long'), // Store PDF binary data
+    type: DataTypes.BLOB('long'),
     allowNull: true,
   },
   pdfMimeType: {

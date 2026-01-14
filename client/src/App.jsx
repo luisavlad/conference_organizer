@@ -12,32 +12,34 @@ import NotFound from "./pages/NotFound";
 export default function App() {
   const { currentUser, switchUser, allUsers, currentArticle, currentConference } = useUser();
 
-  // Helper function to check if user can access the current article
+  // ---------------------------------------------------------
+  // Check if user can access current article
+  // ---------------------------------------------------------
   const canUserAccessArticle = (user) => {
-    if (!currentArticle) return true; // No article context, allow all
-    if (user.role === "ORGANIZER") return true; // Organizers always have access
+    if (!currentArticle) return true;
+    if (user.role === "ORGANIZER") return true;
     if (user.role === "AUTHOR") {
-      return user.id === currentArticle.authorId; // Only the article author
+      return user.id === currentArticle.authorId;
     }
     if (user.role === "REVIEWER") {
       return (
         user.id === currentArticle.reviewer1Id ||
         user.id === currentArticle.reviewer2Id
-      ); // Only assigned reviewers
+      );
     }
     return false;
   };
 
-  // Helper function to check if user can access the current conference
+  // ---------------------------------------------------------
+  // Check if user can access current conference
+  // ---------------------------------------------------------
   const canUserAccessConference = (user) => {
-    if (!currentConference) return true; // No conference context, allow all
-    if (user.role === "ORGANIZER") return true; // Organizers always have access
+    if (!currentConference) return true;
+    if (user.role === "ORGANIZER") return true;
     if (user.role === "AUTHOR") {
-      // Authors who have submitted articles to this conference
       return currentConference.articles?.some(article => article.authorId === user.id) ?? true;
     }
     if (user.role === "REVIEWER") {
-      // Reviewers assigned to this conference
       return user.id === currentConference.reviewer1 || 
              user.id === currentConference.reviewer2 || 
              user.id === currentConference.reviewer3;

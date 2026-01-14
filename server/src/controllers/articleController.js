@@ -7,6 +7,9 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const articleController = {
+  // ---------------------------------------------------------
+  // Retrieve all articles for a specific conference
+  // ---------------------------------------------------------
   getByConferenceId: async (req, res) => {
     try {
       const { conferenceId } = req.params;
@@ -33,6 +36,9 @@ const articleController = {
     }
   },
 
+  // ---------------------------------------------------------
+  // Create a new article with PDF upload
+  // ---------------------------------------------------------
   create: async (req, res) => {
     try {
       console.log("Request body:", req.body);
@@ -47,7 +53,6 @@ const articleController = {
         });
       }
 
-      // Fetch conference to get reviewers
       const conference = await Conference.findByPk(conferenceId);
       if (!conference) {
         return res.status(404).json({
@@ -56,21 +61,18 @@ const articleController = {
         });
       }
 
-      // Get all reviewers from conference
       const reviewers = [
         conference.reviewer1,
         conference.reviewer2,
         conference.reviewer3,
       ].filter((r) => r !== null && r !== undefined);
 
-      // Randomly select 2 reviewers
       let selectedReviewers = [];
       if (reviewers.length >= 2) {
         const shuffled = [...reviewers].sort(() => Math.random() - 0.5);
         selectedReviewers = shuffled.slice(0, 2);
       }
 
-      // Read PDF file as binary data
       const pdfData = fs.readFileSync(req.file.path);
 
       const newArticle = await Article.create({
@@ -88,7 +90,6 @@ const articleController = {
         reviewer2Id: selectedReviewers[1] || null,
       });
 
-      // Delete uploaded file after saving to database
       try {
         fs.unlinkSync(req.file.path);
       } catch (unlinkErr) {
@@ -103,7 +104,6 @@ const articleController = {
       });
     } catch (err) {
       console.error("Article creation error:", err);
-      // Delete uploaded file if article creation fails
       if (req.file) {
         try {
           fs.unlinkSync(req.file.path);
@@ -119,6 +119,9 @@ const articleController = {
     }
   },
 
+  // ---------------------------------------------------------
+  // Retrieve article PDF file
+  // ---------------------------------------------------------
   getPdf: async (req, res) => {
     try {
       const { id } = req.params;
@@ -141,14 +144,12 @@ const articleController = {
         });
       }
 
-      // Set appropriate headers
       res.setHeader("Content-Type", article.pdfMimeType || "application/pdf");
       res.setHeader(
         "Content-Disposition",
         `inline; filename="${article.pdfFilename || article.title + '.pdf'}"`
       );
 
-      // Send the binary PDF data
       res.send(article.pdfData);
     } catch (err) {
       console.error(err);
@@ -159,6 +160,9 @@ const articleController = {
     }
   },
 
+  // ---------------------------------------------------------
+  // Retrieve article by ID with reviewer details
+  // ---------------------------------------------------------
   getById: async (req, res) => {
     try {
       const { id } = req.params;
@@ -172,7 +176,6 @@ const articleController = {
         });
       }
 
-      // Fetch reviewer information
       const reviewers = [];
       if (article.reviewer1Id) {
         const reviewer1 = await User.findByPk(article.reviewer1Id, {
@@ -205,6 +208,9 @@ const articleController = {
     }
   },
 
+  // ---------------------------------------------------------
+  // Update article review status
+  // ---------------------------------------------------------
   updateStatus: async (req, res) => {
     try {
       const { id } = req.params;
@@ -251,6 +257,9 @@ const articleController = {
     }
   },
 
+  // ---------------------------------------------------------
+  // Update article with new version
+  // ---------------------------------------------------------
   update: async (req, res) => {
     try {
       const { id } = req.params;
@@ -272,11 +281,9 @@ const articleController = {
         });
       }
 
-      // Read new PDF file as binary data
       const pdfData = fs.readFileSync(req.file.path);
       const newVersion = article.currentVersion + 1;
 
-      // Update versions history
       const updatedVersions = [
         ...article.versions,
         {
@@ -285,7 +292,6 @@ const articleController = {
         },
       ];
 
-      // Update article
       article.title = title || article.title;
       article.summary = summary || article.summary;
       article.pdfData = pdfData;
@@ -293,11 +299,10 @@ const articleController = {
       article.pdfFilename = req.file.originalname;
       article.currentVersion = newVersion;
       article.versions = updatedVersions;
-      article.status = "IN_REVIEW"; // Reset to IN_REVIEW after update
+      article.status = "IN_REVIEW";
 
       await article.save();
 
-      // Delete uploaded file after saving to database
       try {
         fs.unlinkSync(req.file.path);
       } catch (unlinkErr) {
@@ -312,7 +317,6 @@ const articleController = {
       });
     } catch (err) {
       console.error("Article update error:", err);
-      // Delete uploaded file if update fails
       if (req.file) {
         try {
           fs.unlinkSync(req.file.path);

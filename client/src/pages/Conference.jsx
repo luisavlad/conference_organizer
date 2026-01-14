@@ -17,18 +17,15 @@ export default function Conference() {
     const fetchData = async () => {
       try {
         setLoading(true);
-        // Fetch all conferences to find the current one
         const allConferences = await conferenceRequests.getAll();
         const currentConference = allConferences.find((conf) => conf.id === id);
         
-        // Fetch articles for this conference
         const conferenceArticles = await articleRequests.getByConferenceId(id);
         setArticles(conferenceArticles);
         
-        // Add articles to conference object for context
         const conferenceWithArticles = { ...currentConference, articles: conferenceArticles };
         setConference(currentConference);
-        setCurrentConference(conferenceWithArticles); // Set conference with articles in context for header dropdown
+        setCurrentConference(conferenceWithArticles);
       } catch (error) {
         console.error("Failed to fetch conference data:", error);
       } finally {
@@ -38,7 +35,6 @@ export default function Conference() {
 
     fetchData();
 
-    // Clear conference from context when leaving the page
     return () => setCurrentConference(null);
   }, [id, setCurrentConference]);
 

@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import articleRequests from "../api/articleRequests";
-import styles from "./CreateConference.module.css"; // Reuse similar styling
+import styles from "./CreateConference.module.css";
 
 export default function EditArticle() {
   const navigate = useNavigate();
@@ -30,6 +30,9 @@ export default function EditArticle() {
     fetchArticle();
   }, [articleId]);
 
+  // ---------------------------------------------------------
+  // Handle drag events for file upload
+  // ---------------------------------------------------------
   const handleDrag = (e) => {
     e.preventDefault();
     e.stopPropagation();
@@ -40,6 +43,9 @@ export default function EditArticle() {
     }
   };
 
+  // ---------------------------------------------------------
+  // Handle file drop for PDF upload
+  // ---------------------------------------------------------
   const handleDrop = (e) => {
     e.preventDefault();
     e.stopPropagation();
@@ -53,6 +59,9 @@ export default function EditArticle() {
     }
   };
 
+  // ---------------------------------------------------------
+  // Handle file selection from input
+  // ---------------------------------------------------------
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     if (file && file.type === "application/pdf") {
@@ -62,6 +71,9 @@ export default function EditArticle() {
     }
   };
 
+  // ---------------------------------------------------------
+  // Submit article update with new version
+  // ---------------------------------------------------------
   const handleSubmit = async (e) => {
     e.preventDefault();
 

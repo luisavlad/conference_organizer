@@ -4,9 +4,7 @@ const UserContext = createContext();
 
 export { UserContext };
 
-// Users matching the seeded database IDs
 const MOCK_USERS = [
-  // Organizers
   {
     id: "11111111-1111-4111-1111-111111111111",
     name: "Alice Organizer",
@@ -25,7 +23,6 @@ const MOCK_USERS = [
     role: "ORGANIZER",
     email: "mark@conf.com",
   },
-  // Reviewers
   {
     id: "22222222-2222-4222-2222-111111111111",
     name: "Charlie Reviewer",
@@ -62,7 +59,6 @@ const MOCK_USERS = [
     role: "REVIEWER",
     email: "kelly@rev.com",
   },
-  // Authors
   {
     id: "33333333-3333-4333-3333-111111111111",
     name: "Hannah Author",
@@ -100,6 +96,9 @@ export function UserProvider({ children }) {
   const [currentArticle, setCurrentArticle] = useState(null);
   const [currentConference, setCurrentConference] = useState(null);
 
+  // ---------------------------------------------------------
+  // Switch current user for preview mode
+  // ---------------------------------------------------------
   const switchUser = (userId) => {
     const user = MOCK_USERS.find((u) => u.id === userId);
     if (user) {
