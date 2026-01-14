@@ -24,11 +24,3 @@ app.use("/api/articles", articleRouter);
 app.use("/api/comments", commentRouter);
 
 export default app;
-
-/*
-    1. creare conferinta - alocare 3+ revieweri (alocare manuala)
-    2. inregistrati-va si trimiteti un articol (join conference)
-    3. adaugare articol se aleg automat din cei 3+ 2 revieweri
-    4. ca reviewer lasati/cereti modificari (feedback) 
-    5. incarcati versiune noua articol, vedeti status
-*/
