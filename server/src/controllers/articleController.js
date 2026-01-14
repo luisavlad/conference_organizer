@@ -272,10 +272,9 @@ const articleController = {
         });
       }
 
-      // Store the old PDF path for version history
-      const oldPdfUrl = article.pdfUrl;
+      // Read new PDF file as binary data
+      const pdfData = fs.readFileSync(req.file.path);
       const newVersion = article.currentVersion + 1;
-      const newPdfUrl = `/uploads/articles/${req.file.filename}`;
 
       // Update versions history
       const updatedVersions = [
@@ -283,19 +282,27 @@ const articleController = {
         {
           v: article.currentVersion,
           date: article.updatedAt,
-          pdfUrl: oldPdfUrl,
         },
       ];
 
       // Update article
       article.title = title || article.title;
       article.summary = summary || article.summary;
-      article.pdfUrl = newPdfUrl;
+      article.pdfData = pdfData;
+      article.pdfMimeType = req.file.mimetype;
+      article.pdfFilename = req.file.originalname;
       article.currentVersion = newVersion;
       article.versions = updatedVersions;
       article.status = "IN_REVIEW"; // Reset to IN_REVIEW after update
 
       await article.save();
+
+      // Delete uploaded file after saving to database
+      try {
+        fs.unlinkSync(req.file.path);
+      } catch (unlinkErr) {
+        console.error("Failed to delete temporary file:", unlinkErr);
+      }
 
       res.status(200).json({
         status: "success",
@@ -318,6 +325,8 @@ const articleController = {
         message: "Failed to update article.",
         error: err.message,
       });
+    }
+  },
     }
   },
 };

@@ -1,5 +1,5 @@
 import { useState, useEffect, useContext } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import { Document, Page, pdfjs } from "react-pdf";
 import "react-pdf/dist/Page/AnnotationLayer.css";
 import "react-pdf/dist/Page/TextLayer.css";
@@ -147,12 +147,12 @@ export default function Article() {
         {canUploadNewVersion && (
           <div className={styles.revisionNotice}>
             <p>⚠️ Revision required! Please upload a new version of your article.</p>
-            <button
+            <Link
+              to={`/conferences/${article.conferenceId}/articles/${articleId}/edit`}
               className={styles.uploadNewVersionBtn}
-              onClick={() => window.location.href = `/conferences/${article.conferenceId}/articles/${articleId}/edit`}
             >
               Upload New Version
-            </button>
+            </Link>
           </div>
         )}
 
