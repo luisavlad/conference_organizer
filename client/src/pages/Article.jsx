@@ -100,8 +100,6 @@ export default function Article() {
     currentUser?.id === article.reviewer1Id ||
     currentUser?.id === article.reviewer2Id;
   const canEditStatus = isOrganizer || isAssignedReviewer;
-  const isAuthor = currentUser?.id === article.authorId;
-  const canUploadNewVersion = isAuthor && article.status === "REVISION_REQUIRED";
 
   // Authors can only see and write public comments
   const canWriteInternalComments = isOrganizer || isAssignedReviewer;
@@ -143,18 +141,6 @@ export default function Article() {
             )}
           </div>
         </div>
-
-        {canUploadNewVersion && (
-          <div className={styles.revisionNotice}>
-            <p>⚠️ Revision required! Please upload a new version of your article.</p>
-            <Link
-              to={`/conferences/${article.conferenceId}/articles/${articleId}/edit`}
-              className={styles.uploadNewVersionBtn}
-            >
-              Upload New Version
-            </Link>
-          </div>
-        )}
 
         {article.reviewers && article.reviewers.length > 0 && (
           <div className={styles.reviewersInfo}>

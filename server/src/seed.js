@@ -1,6 +1,16 @@
 import "dotenv/config";
 import database from "./core/database.js";
 import { User, Conference, Article, Comment } from "./models/index.js";
+import fs from "fs";
+import path from "path";
+import { fileURLToPath } from "url";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+// Read the sample PDF file
+const samplePdfPath = path.join(__dirname, "../../client/public/mock/sample.pdf");
+const samplePdfData = fs.readFileSync(samplePdfPath);
 
 // Hardcoded UUIDs to ensure connections are consistent and "real"
 const U_IDS = {
@@ -184,8 +194,10 @@ async function seed() {
       {
         id: A_IDS.ART1,
         title: "Advances in Neural Networks",
-        pdfUrl: "http://uploads.conf.com/art1.pdf",
-        summary: "A deep dive into transformer architectures.",
+        summary: "A deep dive into transformer architectures",
+        pdfData: samplePdfData,
+        pdfMimeType: "application/pdf",
+        pdfFilename: "advances-neural-networks.pdf",
         status: "IN_REVIEW",
         authorId: U_IDS.AUTH1,
         conferenceId: C_IDS.CONF1, // Tech Summit
@@ -197,8 +209,10 @@ async function seed() {
       {
         id: A_IDS.ART2,
         title: "CRISPR Applications",
-        pdfUrl: "http://uploads.conf.com/art2.pdf",
-        summary: "Gene editing techniques for the 21st century.",
+        summary: "Gene editing techniques for the 21st century",
+        pdfData: samplePdfData,
+        pdfMimeType: "application/pdf",
+        pdfFilename: "crispr-applications.pdf",
         status: "ACCEPTED",
         authorId: U_IDS.AUTH2,
         conferenceId: C_IDS.CONF2, // BioMed
@@ -213,8 +227,10 @@ async function seed() {
       {
         id: A_IDS.ART3,
         title: "Digital Renaissance",
-        pdfUrl: "http://uploads.conf.com/art3.pdf",
-        summary: "NFTs and their impact on traditional art.",
+        summary: "NFTs and their impact on traditional art",
+        pdfData: samplePdfData,
+        pdfMimeType: "application/pdf",
+        pdfFilename: "digital-renaissance.pdf",
         status: "REVISION_REQUIRED",
         authorId: U_IDS.AUTH3,
         conferenceId: C_IDS.CONF3, // Art Expo
@@ -226,8 +242,10 @@ async function seed() {
       {
         id: A_IDS.ART4,
         title: "Zero Trust Architecture",
-        pdfUrl: "http://uploads.conf.com/art4.pdf",
-        summary: "Implementing security in distributed systems.",
+        summary: "Implementing security in distributed systems",
+        pdfData: samplePdfData,
+        pdfMimeType: "application/pdf",
+        pdfFilename: "zero-trust-architecture.pdf",
         status: "IN_REVIEW",
         authorId: U_IDS.AUTH1, // Same author as Art 1
         conferenceId: C_IDS.CONF4, // CyberSec
@@ -239,8 +257,10 @@ async function seed() {
       {
         id: A_IDS.ART5,
         title: "Gamification in Classrooms",
-        pdfUrl: "http://uploads.conf.com/art5.pdf",
-        summary: "Using game mechanics to improve student engagement.",
+        summary: "Using game mechanics to improve student engagement",
+        pdfData: samplePdfData,
+        pdfMimeType: "application/pdf",
+        pdfFilename: "gamification-classrooms.pdf",
         status: "REJECTED",
         authorId: U_IDS.AUTH2,
         conferenceId: C_IDS.CONF5, // EduTech
