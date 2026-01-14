@@ -1,7 +1,7 @@
 import app from "./app.js";
 import database from "./database.js";
 
-const PORT = 8080;
+const PORT = process.env.PORT || 8080;
 
 async function initDb() {
   try {
